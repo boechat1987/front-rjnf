@@ -1,22 +1,24 @@
-.logon-container{
+/* .logon-container{
     width:100%;
-    max-width: 1120px;
+    max-width: 400px;
     height: 100vh;
-    margin: 0 auto;
-
+    margin: 0 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-}
+} */
 
 .logon-container section.form{
     width: 100%;
     max-width: 350px;
+    max-height: auto;
     margin-right: 30px;
+    margin-top: 30px;
 }
 
 .logon-container section.form form{
-    margin-top: 100px;
+    padding: 0px 30px;
+    
 }
 
 .logon-container section.form form h1 {

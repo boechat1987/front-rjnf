@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import { FiLogIn } from 'react-icons/fi';
-import logo from '../../assets/logo.png';
+// import logo from '../../assets/logo.png';
 import { doGet } from "../../helper/ApiHelper";
 import './styles.css';
 
@@ -40,10 +40,10 @@ export default function Logon(){
         return(
             <div className="logon-container">
                 <section className="form">
-                    <img src={logo} alt="verificarImg 1" />
+                    {/* <img src={logo} alt="verificarImg 1" /> */}
 
                     <form onSubmit={handleLogin}>
-                        <h1> Faça seu logon</h1>
+                        <h1> Faça seu login</h1>
 
                         <input 
                             placeholder="Sua ID"
@@ -58,7 +58,7 @@ export default function Logon(){
                         </Link>
                     </form>
                 </section>
-            <img src={logo} alt="verificaImg2" />
+            {/* <img src={logo} alt="verificaImg2" /> */}
             </div>
         );
 }
