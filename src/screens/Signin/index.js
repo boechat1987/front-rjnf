@@ -41,7 +41,6 @@ export default function Logon(){
             <div className="logon-container">
                 <section className="form">
                     {/* <img src={logo} alt="verificarImg 1" /> */}
-
                     <form onSubmit={handleLogin}>
                         <h1> Faça seu login</h1>
 
@@ -52,7 +51,7 @@ export default function Logon(){
                         />
                         <button className= "button" type="submit">Entrar</button>
 
-                        <Link className="back-link" to="/"> 
+                        <Link className="back-link" to="/Register"> 
                         <FiLogIn size={16} color="#E02041" />
                             não tenho cadastro
                         </Link>

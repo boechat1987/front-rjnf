@@ -38,7 +38,7 @@ const Uploader  = props => {
         url: `${API_BASE}prog/${fileName}`,
         method: 'GET',
         }).then((response) => {
-        console.log("success");
+        console.log("success", `${fileName}`);
         const newFiles = files.filter(item => item.name !== fileName);
         setFiles(newFiles);
         }).catch((error) => {

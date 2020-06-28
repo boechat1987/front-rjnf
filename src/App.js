@@ -3,6 +3,7 @@ import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 import Home from "./screens/Home";
 import Signin from "./screens/Signin";
 import Program from "./screens/Program";
+import Register from "./screens/Register";
 import Drop from "./screens/Program/dropzone.js";
 import ProgramUsuario from "./screens/Program/ProgramUsuario";
 import './global.css';
@@ -30,6 +31,11 @@ const App = () => {
                 <Link to="/Signin">Signin</Link>
             </li>
         </ul>
+        <ul className="margemlink">
+            <li>
+                <Link to="/Register">Register</Link>
+            </li>
+        </ul>
         <Switch>
             <Route path="/Program/Usuario/:id">
                 <ProgramUsuario />
@@ -42,6 +48,9 @@ const App = () => {
             </Route>
             <Route path="/Signin" exact>
                 <Signin />
+            </Route>
+            <Route path="/Register" exact>
+                <Register />
             </Route>
             <Route path="/" exact>
                 <Home />

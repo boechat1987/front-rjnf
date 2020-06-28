@@ -1,0 +1,18 @@
+.register-container section.form{
+    width: 100%;
+    max-width: 350px;
+    max-height: auto;
+    margin-right: 30px;
+    margin-top: 30px;
+}
+
+.register-container section.form form{
+    padding: 0px 30px;
+    
+}
+
+.register-container section.form form h1 {
+    font-size: 32px;
+    margin-bottom: 32px;
+}
+
