@@ -25,7 +25,7 @@ export default function Register(){
         };
 
       try{
-        const response = await axios({
+            await axios({
             url: `${API_BASE}users`,
             method: 'POST',
             data: data,

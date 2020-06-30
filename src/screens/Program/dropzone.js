@@ -3,18 +3,18 @@ import axios from 'axios';
 const API_BASE = process.env.REACT_APP_API_URL;
 
 function submitForm(contentType, data, setResponse) {
-    axios({
-    url: `${API_BASE}s3`,
-    method: 'POST',
-    data: data,
-    headers: {
-    'Content-Type': contentType
-    }
-    }).then((response) => {
-    setResponse(response.data);
-    }).catch((error) => {
-    setResponse("error");
-    })
+    // axios({
+    // url: `${API_BASE}s3`,
+    // method: 'POST',
+    // data: data,
+    // headers: {
+    // 'Content-Type': contentType
+    // }
+    // }).then((response) => {
+    // setResponse(response.data);
+    // }).catch((error) => {
+    // setResponse("error");
+    // })
 
     axios({
         url: `${API_BASE}s3/hard`,
