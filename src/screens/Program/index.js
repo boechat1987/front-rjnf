@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { doGet } from "../../helper/ApiHelper";
+import './styles.css';
 
 const Program = () => {
   const [userOrdens, setUserOrdens] = useState([]);
@@ -16,9 +17,10 @@ const Program = () => {
   
   const usersOrdem = userOrdens.map((ordens) => {
     const id = ordens.id;
-    return <li key={id}>{ordens.text} <br></br>
-    user id:{ordens.user_id} <br></br>
-    programação id:{ordens.programacao_id}
+    return <li key={id}>
+      <strong>Descrição:</strong> {ordens.text} <br></br>
+      <strong>Executante:</strong>{ordens.user_id} <br></br>
+      <strong>Id programação:</strong>{ordens.programacao_id}
     </li>;
   });
 
@@ -30,15 +32,18 @@ const Program = () => {
 
   return (
     
-    <>
-    <h1>Semana ??</h1>
-    <ul>
-        {usersOrdem}
-    </ul>
-    <ul>
-        {usersProgram}
-    </ul>
-    </>
+    <div className="profile-container">
+      <header>
+      <span>Programação: ??</span>
+      </header>
+      {/* <span>Bem vinda, {prog.semana}</span> */}
+      <ul>
+          {usersOrdem}
+      </ul>
+      <ul>
+          {usersProgram}
+      </ul>
+    </div>
     );
 };
 
