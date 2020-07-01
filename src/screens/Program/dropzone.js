@@ -35,7 +35,7 @@ const Uploader  = props => {
     const [success, setSuccess] = useState(false);
     const [files, setFiles] = useState([]);
     const handleClick = fileName => axios({
-        url: `${API_BASE}prog/${fileName}`,
+        url: `${API_BASE}prog/file/${fileName}`,
         method: 'GET',
         }).then((response) => {
         console.log("success", `${fileName}`);
