@@ -29,7 +29,7 @@ const Program = () => {
   return <li key={id}>data: {program.data} <br></br>
   Programação_id: {program.id}</li>;
   });
-
+  
   return (
     
     <div className="profile-container">
@@ -39,8 +39,6 @@ const Program = () => {
       {/* <span>Bem vinda, {prog.semana}</span> */}
       <ul>
           {usersOrdem}
-      </ul>
-      <ul>
           {usersProgram}
       </ul>
     </div>

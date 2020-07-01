@@ -35,16 +35,18 @@ const ProgramUsuario = () => {
   const showUserProgram = ListOrdensId.map((showprog) => {
     
     const osId = showprog.osId;
-    return <li key={osId}>{osId}Descrição da ordem: {showprog.text} <br></br>
-    Programação_id: {showprog.prog_id} <br></br>
-    Numero OS: {showprog.numero}</li>;
+    return <li key={osId}>
+    <strong>Numero OS:</strong> {showprog.numero} <br></br>
+    <strong>Descrição da ordem:</strong> {showprog.text} <br></br>
+    <strong>Programação_id:</strong> {showprog.prog_id} 
+    </li>;
   });
 
   return (
     
     <div className="profile-container">
       <header>
-        <span><strong>{person.username}</strong></span>
+        <span><strong>Executante: {person.username}</strong></span>
       </header>
       <ul>
           {showUserProgram}
