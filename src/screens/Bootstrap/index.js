@@ -1,7 +1,7 @@
 import React from "react";
 import "./styles.css";
 import { Nav, Navbar, NavDropdown } from "react-bootstrap";
-import { ReactComponent as Logo } from "./logo.svg";
+import { ReactComponent as Logo } from "../../assets/logo.svg";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
