@@ -1,41 +1,19 @@
 import React from "react";
-import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Home from "./screens/Home";
 import Signin from "./screens/Signin";
 import Program from "./screens/Program";
 import Register from "./screens/Register";
 import Drop from "./screens/Program/dropzone.js";
 import ProgramUsuario from "./screens/Program/ProgramUsuario";
+import Menu from "./screens/Bootstrap";
+import Transport from "./screens/Transport"; 
 import './global.css';
 
 const App = () => {
     return (
     <BrowserRouter>
-        <ul className="margemlink">
-            <li>
-                <Link to="/">Home</Link>
-            </li>
-        </ul>
-        <ul className="margemlink">
-            <li>
-                <Link to="/Program">Programação</Link>
-            </li>
-        </ul>
-        <ul className="margemlink">
-            <li>
-                <Link to="/Drop">Dropzone</Link>
-            </li>
-        </ul>
-        <ul className="margemlink">
-            <li>
-                <Link to="/Signin">Signin</Link>
-            </li>
-        </ul>
-        <ul className="margemlink">
-            <li>
-                <Link to="/Register">Register</Link>
-            </li>
-        </ul>
+        <Menu />
         <Switch>
             <Route path="/Program/Usuario/:id">
                 <ProgramUsuario />
@@ -51,6 +29,9 @@ const App = () => {
             </Route>
             <Route path="/Register" exact>
                 <Register />
+            </Route>
+            <Route path="/Transport" exact>
+                <Transport />
             </Route>
             <Route path="/" exact>
                 <Home />
