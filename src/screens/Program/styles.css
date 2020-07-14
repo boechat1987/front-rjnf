@@ -135,3 +135,10 @@
     text-align: center;
     text-decoration: none;
 }
+/* .items-grid li{
+    border: 2px solid #34cb79
+} */
+.items-grid a span,
+.items-grid li span{
+    pointer-events: none;
+}
