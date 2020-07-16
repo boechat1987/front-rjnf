@@ -73,7 +73,7 @@ const Program = () => {
         });
       });
   const usersOrdem = ListOrdensId.map((ordens) => {
-    const id = ordens.osId; 
+    const id = ordens.osId;
       return <React.Fragment key={id}>
             <tr><td>{ordens.nome}</td>
             <td>{ordens.text}</td>
@@ -128,9 +128,9 @@ const Program = () => {
       <header>
       <span>Programação: {pages}</span>
       </header>
-      <div>
+      {/* <div>
       <input type="button" name="items"></input>
-      </div>
+      </div> */}
       <div className="items-grid">
       <Pagination >
         <Pagination.First data-id="1" />
@@ -142,9 +142,11 @@ const Program = () => {
         <Pagination.Last data-id="7" />
       </Pagination>
       </div>
-      <div className="profile-container">
-        {/* <span>Bem vinda, {prog.semana}</span> */}
-          <Table responsive="sm" hover striped bordered>
+      <div className="">
+          <Table responsive="sm" size="sm" hover striped bordered>
+              <thead>
+                <tr><th>Semana: {pages}</th><th className="text-center" colSpan="3">Segunda feira</th></tr>
+              </thead> 
               <thead>
                 <tr><th>Executante</th><th>Descrição</th><th>OS</th><th>Data</th></tr>
               </thead> 
@@ -154,6 +156,89 @@ const Program = () => {
                 </tbody>      
           </Table>
             
+      </div>
+      <div className="">
+          <Table responsive="sm" size="sm" hover striped bordered>
+              <thead>
+                <tr><th>Semana: {pages}</th><th className="text-center" colSpan="3">Terça feira</th></tr>
+              </thead> 
+              <thead>
+                <tr><th>Executante</th><th>Descrição</th><th>OS</th><th>Data</th></tr>
+              </thead> 
+                <tbody>
+                
+                </tbody>      
+          </Table>   
+      </div>
+
+      <div className="">
+          <Table responsive="sm" size="sm" hover striped bordered>
+              <thead>
+                <tr><th>Semana: {pages}</th><th className="text-center" colSpan="3">Quarta feira</th></tr>
+              </thead> 
+              <thead>
+                <tr><th>Executante</th><th>Descrição</th><th>OS</th><th>Data</th></tr>
+              </thead> 
+                <tbody>
+                
+                </tbody>      
+          </Table>   
+      </div>
+
+      <div className="">
+          <Table responsive="sm" size="sm" hover striped bordered>
+              <thead>
+                <tr><th>Semana: {pages}</th><th className="text-center" colSpan="3">Quinta feira</th></tr>
+              </thead> 
+              <thead>
+                <tr><th>Executante</th><th>Descrição</th><th>OS</th><th>Data</th></tr>
+              </thead> 
+                <tbody>
+                
+                </tbody>      
+          </Table>   
+      </div>
+
+      <div className="">
+          <Table responsive="sm" size="sm" hover striped bordered>
+              <thead>
+                <tr><th>Semana: {pages}</th><th className="text-center" colSpan="3">Sexta feira</th></tr>
+              </thead> 
+              <thead>
+                <tr><th>Executante</th><th>Descrição</th><th>OS</th><th>Data</th></tr>
+              </thead> 
+                <tbody>
+                
+                </tbody>      
+          </Table>   
+      </div>
+
+      <div className="">
+          <Table responsive="sm" size="sm" hover striped bordered>
+              <thead>
+                <tr><th>Semana: {pages}</th><th className="text-center" colSpan="3">Sábado</th></tr>
+              </thead> 
+              <thead>
+                <tr><th>Executante</th><th>Descrição</th><th>OS</th><th>Data</th></tr>
+              </thead> 
+                <tbody>
+                
+                </tbody>      
+          </Table>   
+      </div>
+
+      <div className="">
+          <Table responsive="sm" size="sm" hover striped bordered>
+              <thead>
+                <tr><th>Semana: {pages}</th><th className="text-center" colSpan="3">Domingo</th></tr>
+              </thead> 
+              <thead>
+                <tr><th>Executante</th><th>Descrição</th><th>OS</th><th>Data</th></tr>
+              </thead> 
+                <tbody>
+                
+                </tbody>      
+          </Table>   
       </div>
       
     </div>
