@@ -46,6 +46,8 @@ const Program = () => {
     const {months} = dateDiff("2020-01-01");
     if (months>1){
     const firstPage = Math.trunc((months*30)/7)
+    setPreviewPages(firstPage-1)
+    setNextPages(firstPage+1)
     setPages(firstPage)}
   }
 
@@ -103,80 +105,140 @@ const Program = () => {
                 const progId = program.id;
                 if (ListOrdensPeloId.programacao_id === (parseInt(progId))){  
                   if (ListOrdensPeloId.user_id===(parseInt(user))){
-                    ListOrdensId.push(
-                      {
-                        nome: person.username,
-                        data: program.data,
-                        text: ListOrdensPeloId.text,
-                        numero: ListOrdensPeloId.numero,
-                        osId: ListOrdensPeloId.id
-                      }                   
-                    )
+                    const data = program.data.split("T",1);
+                    const ddWeek= isWeekDay(data[0]);
+                      ListOrdensId.push(
+                        {
+                          nome: person.username,
+                          data: program.data,
+                          text: ListOrdensPeloId.text,
+                          numero: ListOrdensPeloId.numero,
+                          osId: ListOrdensPeloId.id,
+                          ddWeek: ddWeek
+                        }                   
+                      )
                   }   
                 }
               });
         });
       });
-  const usersOrdem = ListOrdensId.map((ordens) => {
-    const id = ordens.osId;
-    const data = ordens.data.split("T",1);
+      
+      const usersMonday = ListOrdensId.map((ordens) => {
+        if (ordens.ddWeek === 2){
+        const id = ordens.osId;
+        const data = ordens.data.split("T",1);  
+          return <React.Fragment key={id}>
+                <tr><td>{ordens.nome}</td>
+                <td>{ordens.text}</td>
+                <td>{ordens.numero}</td>
+                <td>{data}</td>
+                </tr>
+            </React.Fragment>;}
+        return null    
+      });
 
-      return <React.Fragment key={id}>
-            <tr><td>{ordens.nome}</td>
-            <td>{ordens.text}</td>
-            <td>{ordens.numero}</td>
-            <td>{data}</td>
-            </tr>
-        </React.Fragment>;
-  });
+      const usersTuesday = ListOrdensId.map((ordens) => {
+        if (ordens.ddWeek === 3){
+        const id = ordens.osId;
+        const data = ordens.data.split("T",1);  
+          return <React.Fragment key={id}>
+                <tr><td>{ordens.nome}</td>
+                <td>{ordens.text}</td>
+                <td>{ordens.numero}</td>
+                <td>{data}</td>
+                </tr>
+            </React.Fragment>;}
+        return null    
+      });
 
-  // const collectedItems = document.querySelector("input[name=items]")
-  // let selectedItems = []
+      const usersWenesday = ListOrdensId.map((ordens) => {
+        if (ordens.ddWeek === 4){
+        const id = ordens.osId;
+        const data = ordens.data.split("T",1);  
+          return <React.Fragment key={id}>
+                <tr><td>{ordens.nome}</td>
+                <td>{ordens.text}</td>
+                <td>{ordens.numero}</td>
+                <td>{data}</td>
+                </tr>
+            </React.Fragment>;}
+        return null    
+      });
 
-  // const itemsToCollect = document.querySelectorAll(".items-grid li a");
-  // for (const item of itemsToCollect){
-  //   item.addEventListener("click", handleSelectedItem);
-  // }
+      const usersThursday = ListOrdensId.map((ordens) => {
+        if (ordens.ddWeek === 5){
+        const id = ordens.osId;
+        const data = ordens.data.split("T",1);  
+          return <React.Fragment key={id}>
+                <tr><td>{ordens.nome}</td>
+                <td>{ordens.text}</td>
+                <td>{ordens.numero}</td>
+                <td>{data}</td>
+                </tr>
+            </React.Fragment>;}
+        return null    
+      });
 
-  // function handleSelectedItem(event){
-  //   const itemLi = event.target;
-  //   itemLi.classList.add("selected");
-  //   const itemId = itemLi.dataset.id;
-    
-    // const alreadySelected = selectedItems.findIndex(item=>{
-    //    const itemFound = item === itemId
-    //    return itemFound
-    // })
+      const usersFriday = ListOrdensId.map((ordens) => {
+        if (ordens.ddWeek === 6){
+        const id = ordens.osId;
+        const data = ordens.data.split("T",1);  
+          return <React.Fragment key={id}>
+                <tr><td>{ordens.nome}</td>
+                <td>{ordens.text}</td>
+                <td>{ordens.numero}</td>
+                <td>{data}</td>
+                </tr>
+            </React.Fragment>;}
+        return null    
+      });
 
-    // if (alreadySelected >= 0){
-    //     const filteredItems = selectedItems.filter(item=>{
-    //     const itemIsDifferent = item !== itemId // false;
-    //     return itemIsDifferent;
-    //   })
-    
-    // selectedItems = filteredItems
-    // } else{
-    //   //se não estiver selecionado, adiciona seleção
-    //   selectedItems.push(itemId)
-    //   setPages(pages+1)
-    // }
-    // console.log(itemId)
-  //   collectedItems.value = selectedItems
-  //   if (itemId === "6"){
-  //     setPreviewPages (previewPages+1);
-  //     setPages (pages+1);
-  //     setNextPages (nextPages+1)
-  //   }
-  //   console.log(itemLi)
-  // }
-  
+      const usersSaturday = ListOrdensId.map((ordens) => {
+        if (ordens.ddWeek === 1){
+        const id = ordens.osId;
+        const data = ordens.data.split("T",1);  
+          return <React.Fragment key={id}>
+                <tr><td>{ordens.nome}</td>
+                <td>{ordens.text}</td>
+                <td>{ordens.numero}</td>
+                <td>{data}</td>
+                </tr>
+            </React.Fragment>;}
+        return null    
+      });
+
+      const usersSunday = ListOrdensId.map((ordens) => {
+        if (ordens.ddWeek === 0){
+        const id = ordens.osId;
+        const data = ordens.data.split("T",1);  
+          return <React.Fragment key={id}>
+                <tr><td>{ordens.nome}</td>
+                <td>{ordens.text}</td>
+                <td>{ordens.numero}</td>
+                <td>{data}</td>
+                </tr>
+            </React.Fragment>;}
+        return null    
+      });
+
+  function isWeekDay(date){
+    date = date.split('-');
+    var yy = parseInt(date[0]);
+    var mm = parseInt(date[1]);
+    var dd = parseInt(date[2]);
+    let ddWeek = (dd+(2*mm)+((3*(mm+1))/5)+yy+Math.trunc(yy/4)-Math.trunc(yy/100));
+    ddWeek = ddWeek % 7;
+    return ddWeek;
+
+  }
+
   return (
     <div>
       <header>
       <span>Programação: {pages}</span>
       </header>
       <div>
-      <input type="button" className="button" value=" Prog mais atual" onClick={e=>PrimeiraPage()}></input>
+      <input type="button" className="button" value="Atualizar" onClick={e=>PrimeiraPage()}></input>
       </div>
       <div className="items-grid">
       <Pagination >
@@ -198,8 +260,7 @@ const Program = () => {
                 <tr><th>Executante</th><th>Descrição</th><th>OS</th><th>Data</th></tr>
               </thead> 
                 <tbody>
-                {usersOrdem}
-                {/* {usersProgram} */}
+                {usersMonday}
                 </tbody>      
           </Table>
             
@@ -213,7 +274,7 @@ const Program = () => {
                 <tr><th>Executante</th><th>Descrição</th><th>OS</th><th>Data</th></tr>
               </thead> 
                 <tbody>
-                
+                {usersTuesday}
                 </tbody>      
           </Table>   
       </div>
@@ -227,7 +288,7 @@ const Program = () => {
                 <tr><th>Executante</th><th>Descrição</th><th>OS</th><th>Data</th></tr>
               </thead> 
                 <tbody>
-                
+                {usersWenesday}
                 </tbody>      
           </Table>   
       </div>
@@ -241,7 +302,7 @@ const Program = () => {
                 <tr><th>Executante</th><th>Descrição</th><th>OS</th><th>Data</th></tr>
               </thead> 
                 <tbody>
-                
+                {usersThursday}
                 </tbody>      
           </Table>   
       </div>
@@ -255,7 +316,7 @@ const Program = () => {
                 <tr><th>Executante</th><th>Descrição</th><th>OS</th><th>Data</th></tr>
               </thead> 
                 <tbody>
-                
+                {usersFriday}
                 </tbody>      
           </Table>   
       </div>
@@ -269,7 +330,7 @@ const Program = () => {
                 <tr><th>Executante</th><th>Descrição</th><th>OS</th><th>Data</th></tr>
               </thead> 
                 <tbody>
-                
+                {usersSaturday}
                 </tbody>      
           </Table>   
       </div>
@@ -283,7 +344,7 @@ const Program = () => {
                 <tr><th>Executante</th><th>Descrição</th><th>OS</th><th>Data</th></tr>
               </thead> 
                 <tbody>
-                
+                {usersSunday}
                 </tbody>      
           </Table>   
       </div>
