@@ -1,21 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { doGet } from "../../helper/ApiHelper";
 import Pagination from 'react-bootstrap/Pagination'
+import Table from 'react-bootstrap/Table'
 //import PageItem from 'react-bootstrap/PageItem';
 import './styles.css';
 //import { Preview } from "react-dropzone-uploader";
 
 const Program = () => {
 
+  
+  const [person, setPerson] = useState([]);
   const [userOrdens, setUserOrdens] = useState([]);
   const [userProgs, setUserProgs] = useState([]);
   const [pages, setPages] = useState([]);
   const [previewPages, setPreviewPages] = useState([]);
   const [nextPages, setNextPages] = useState([]);
+  let ListOrdensId = [];
 
   useEffect(() => {
     doGet("prog/ordem/").then((ordensUsuarios) => setUserOrdens(ordensUsuarios));
     doGet("prog/semana/").then((progsUsuarios) => setUserProgs(progsUsuarios));
+    doGet("users").then((response) => setPerson(response));
     setPreviewPages(1);
     setPages(2);
     setNextPages(3);
@@ -38,19 +43,44 @@ const Program = () => {
 
   // const semanaId = [...Array(52).keys()].map(i => ({ id: (i), semana: false }));
 
-  const usersOrdem = userOrdens.map((ordens) => {
-    const id = ordens.id;
-    return <li key={id}>
-      <strong>Descrição:</strong> {ordens.text} <br></br>
-      <strong>Executante:</strong>{ordens.user_id} <br></br>
-      <strong>Id programação:</strong>{ordens.programacao_id}
-    </li>;
-  });
-  
-  const usersProgram = userProgs.map((program) => {
-    const id = program.id;
-    return <li key={id}>data: {program.data} <br></br>
-    Programação_id: {program.id}</li>;
+  // const usersOrdem = userOrdens.map((ordens) => {
+  //   const id = ordens.id;
+  //   return <li key={id}>
+  //     <strong>Descrição:</strong> {ordens.text} <br></br>
+  //     <strong>Executante:</strong>{ordens.user_id} <br></br>
+  //     <strong>Id programação:</strong>{ordens.programacao_id}
+  //   </li>;
+  // });
+      person.forEach (person=>{
+        userOrdens.forEach (ListOrdensPeloId => { 
+            const user = person.id;
+              userProgs.forEach((program) => {
+                const progId = program.id;
+                if (ListOrdensPeloId.programacao_id === (parseInt(progId))){  
+                  if (ListOrdensPeloId.user_id===(parseInt(user))){
+                    ListOrdensId.push(
+                      {
+                        nome: person.username,
+                        data: program.data,
+                        text: ListOrdensPeloId.text,
+                        numero: ListOrdensPeloId.numero,
+                        osId: ListOrdensPeloId.id
+                      }                   
+                    )
+                  }   
+                }
+              });
+        });
+      });
+  const usersOrdem = ListOrdensId.map((ordens) => {
+    const id = ordens.osId; 
+      return <React.Fragment key={id}>
+            <tr><td>{ordens.nome}</td>
+            <td>{ordens.text}</td>
+            <td>{ordens.numero}</td>
+            <td>{ordens.data}</td>
+            </tr>
+        </React.Fragment>;
   });
 
   // const collectedItems = document.querySelector("input[name=items]")
@@ -114,14 +144,21 @@ const Program = () => {
       </div>
       <div className="profile-container">
         {/* <span>Bem vinda, {prog.semana}</span> */}
-        <ul>
-            {usersOrdem}
-            {usersProgram}
-        </ul>
+          <Table responsive="sm" hover striped bordered>
+              <thead>
+                <tr><th>Executante</th><th>Descrição</th><th>OS</th><th>Data</th></tr>
+              </thead> 
+                <tbody>
+                {usersOrdem}
+                {/* {usersProgram} */}
+                </tbody>      
+          </Table>
+            
       </div>
       
     </div>
     );
+    
 };
 
 export default Program;
