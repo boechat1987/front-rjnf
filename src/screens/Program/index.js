@@ -26,10 +26,55 @@ const Program = () => {
     setNextPages(3);
   }, []);
 
-  if(!userOrdens){
+  if(!userOrdens || !userOrdens.length){
     return <h1>Loading...</h1>;
   }
+ function handlePagesNext(){
+   if (pages>=2 && pages<=50){
+    setPages(pages+1);
+    setNextPages(nextPages+1);
+    setPreviewPages(previewPages+1);}
+  }
+  function handlePagesPreview(){
+    if (pages>2 && pages<=50){
+    setPages(pages-1);
+    setNextPages(nextPages-1);
+    setPreviewPages(previewPages-1);}
+  }
 
+  function PrimeiraPage(){
+    const {months} = dateDiff("2020-01-01");
+    if (months>1){
+    const firstPage = Math.trunc((months*30)/7)
+    setPages(firstPage)}
+  }
+
+  function dateDiff(date) {
+    date = date.split('-');
+    var today = new Date();
+    var year = today.getFullYear();
+    var month = today.getMonth() + 1;
+    var day = today.getDate();
+    var yy = parseInt(date[0]);
+    var mm = parseInt(date[1]);
+    var dd = parseInt(date[2]);
+    var years, months, days;
+    // months
+    months = month - mm;
+    if (day < dd) {
+        months = months - 1;
+    }
+    // years
+    years = year - yy;
+    if (month * 100 + day < mm * 100 + dd) {
+        years = years - 1;
+        months = months + 12;
+    }
+    // days
+    days = Math.floor((today.getTime() - (new Date(yy + years, mm + months - 1, dd)).getTime()) / (24 * 60 * 60 * 1000));
+    //
+    return {years: years, months: months, days: days};
+}
   // function calcDateSemanaAtual(date1,date2) {
   //   const diff = Math.floor(date1.getTime() - date2.getTime());
   //   const day = 1000 * 60 * 60 * 24;
@@ -74,11 +119,13 @@ const Program = () => {
       });
   const usersOrdem = ListOrdensId.map((ordens) => {
     const id = ordens.osId;
+    const data = ordens.data.split("T",1);
+
       return <React.Fragment key={id}>
             <tr><td>{ordens.nome}</td>
             <td>{ordens.text}</td>
             <td>{ordens.numero}</td>
-            <td>{ordens.data}</td>
+            <td>{data}</td>
             </tr>
         </React.Fragment>;
   });
@@ -128,17 +175,17 @@ const Program = () => {
       <header>
       <span>Programação: {pages}</span>
       </header>
-      {/* <div>
-      <input type="button" name="items"></input>
-      </div> */}
+      <div>
+      <input type="button" className="button" value=" Prog mais atual" onClick={e=>PrimeiraPage()}></input>
+      </div>
       <div className="items-grid">
       <Pagination >
         <Pagination.First data-id="1" />
-        <Pagination.Prev  data-id="2" onClick={e=>setPages(pages-1)}/>
+        <Pagination.Prev  data-id="2" onClick={e=>handlePagesPreview()}/>
         <Pagination.Item data-id="3" >{previewPages}</Pagination.Item>
         <Pagination.Item data-id="4" active >{pages}</Pagination.Item>
         <Pagination.Item data-id="5" >{nextPages}</Pagination.Item>
-        <Pagination.Next data-id="6" onClick={e=>setPages(pages+1)}/>
+        <Pagination.Next data-id="6" onClick={e=>handlePagesNext()}/>
         <Pagination.Last data-id="7" />
       </Pagination>
       </div>
