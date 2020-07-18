@@ -43,7 +43,6 @@ export default function Register(){
         <div className="register-container">
             <div className="content">
                 <section className="form">
-                    {/* <img src={logoImg} alt="Prog RJNF" /> */}
                 <form onSubmit={handleRegister}>
                     <h1>Faça seu cadastro</h1>
                     <input 

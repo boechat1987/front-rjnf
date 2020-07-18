@@ -106,7 +106,7 @@ const Program = () => {
                 if (ListOrdensPeloId.programacao_id === (parseInt(progId))){  
                   if (ListOrdensPeloId.user_id===(parseInt(user))){
                     const data = program.data.split("T",1);
-                    const ddWeek= isWeekDay(data[0]);
+                    const ddWeek= isWeekDay(data[0]);                  
                       ListOrdensId.push(
                         {
                           nome: person.username,
@@ -226,10 +226,9 @@ const Program = () => {
     var yy = parseInt(date[0]);
     var mm = parseInt(date[1]);
     var dd = parseInt(date[2]);
-    let ddWeek = (dd+(2*mm)+((3*(mm+1))/5)+yy+Math.trunc(yy/4)-Math.trunc(yy/100));
+    let ddWeek = Math.trunc(dd+(2*mm)+((3*(mm+1))/5)+yy+Math.trunc(yy/4)-Math.trunc(yy/100));
     ddWeek = ddWeek % 7;
     return ddWeek;
-
   }
 
   return (
