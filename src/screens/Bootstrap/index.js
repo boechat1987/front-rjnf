@@ -3,8 +3,6 @@ import "./styles.css";
 import { Nav, Navbar, NavDropdown } from "react-bootstrap";
 import { ReactComponent as Logo } from "../../assets/logo.svg";
 
-import "bootstrap/dist/css/bootstrap.min.css";
-
 export default function bootstrapMenu() {
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -21,7 +19,7 @@ export default function bootstrapMenu() {
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto">
-          <Nav.Link href="/Signin">Login</Nav.Link>
+          <Nav.Link href="/Signin" >Login</Nav.Link>
           <Nav.Link href="/Program">Programação de Técnicos</Nav.Link>
           <Nav.Link href="/Transport">Programação de Carros</Nav.Link>
           <NavDropdown title="Administrativo" id="collasible-nav-dropdown">

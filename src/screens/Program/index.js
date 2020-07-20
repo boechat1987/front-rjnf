@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { doGet } from "../../helper/ApiHelper";
-import Pagination from 'react-bootstrap/Pagination'
-import Table from 'react-bootstrap/Table'
+import Pagination from 'react-bootstrap/Pagination';
+import Table from 'react-bootstrap/Table';
+import Container from 'react-bootstrap/Container';
+import Collapse from 'react-bootstrap/Collapse';
+import Button from 'react-bootstrap/Button';
 //import PageItem from 'react-bootstrap/PageItem';
 import './styles.css';
 //import { Preview } from "react-dropzone-uploader";
@@ -15,11 +18,20 @@ const Program = () => {
   const [pages, setPages] = useState([]);
   const [previewPages, setPreviewPages] = useState([]);
   const [nextPages, setNextPages] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [open2, setOpen2] = useState(false);
+  const [open3, setOpen3] = useState(false);
+  const [open4, setOpen4] = useState(false);
+  const [open5, setOpen5] = useState(false);
+  const [open6, setOpen6] = useState(false);
+  const [open7, setOpen7] = useState(false);
   let ListOrdensId = [];
 
   useEffect(() => {
-    doGet("prog/ordem/").then((ordensUsuarios) => setUserOrdens(ordensUsuarios));
-    doGet("prog/semana/").then((progsUsuarios) => setUserProgs(progsUsuarios));
+    doGet("prog/ordem/")
+    .then((ordensUsuarios) => setUserOrdens(ordensUsuarios));
+    doGet("prog/semana/")
+    .then((progsUsuarios) => setUserProgs(progsUsuarios));
     doGet("users").then((response) => setPerson(response));
     setPreviewPages(1);
     setPages(2);
@@ -63,6 +75,7 @@ const Program = () => {
     var years, months, days;
     // months
     months = month - mm;
+    
     if (day < dd) {
         months = months - 1;
     }
@@ -74,30 +87,10 @@ const Program = () => {
     }
     // days
     days = Math.floor((today.getTime() - (new Date(yy + years, mm + months - 1, dd)).getTime()) / (24 * 60 * 60 * 1000));
-    //
+    months += 1;
     return {years: years, months: months, days: days};
 }
-  // function calcDateSemanaAtual(date1,date2) {
-  //   const diff = Math.floor(date1.getTime() - date2.getTime());
-  //   const day = 1000 * 60 * 60 * 24;
-  //   const days = Math.floor(diff/day);
-  //   const months = Math.floor(days/31);
-  //   const years = Math.floor(months/12);
 
-  //   const message = date2.toDateString();
-  //   return Math.trunc(days/7);
-  //   }
-
-  // const semanaId = [...Array(52).keys()].map(i => ({ id: (i), semana: false }));
-
-  // const usersOrdem = userOrdens.map((ordens) => {
-  //   const id = ordens.id;
-  //   return <li key={id}>
-  //     <strong>Descrição:</strong> {ordens.text} <br></br>
-  //     <strong>Executante:</strong>{ordens.user_id} <br></br>
-  //     <strong>Id programação:</strong>{ordens.programacao_id}
-  //   </li>;
-  // });
       person.forEach (person=>{
         userOrdens.forEach (ListOrdensPeloId => { 
             const user = person.id;
@@ -234,12 +227,16 @@ const Program = () => {
   return (
     <div>
       <header>
-      <span>Programação: {pages}</span>
+      <span></span>
       </header>
       <div>
+      <Container fluid="sm">
       <input type="button" className="button" value="Atualizar" onClick={e=>PrimeiraPage()}></input>
+      </Container>
       </div>
+      
       <div className="items-grid">
+      <Container fluid="sm">
       <Pagination >
         <Pagination.First data-id="1" />
         <Pagination.Prev  data-id="2" onClick={e=>handlePagesPreview()}/>
@@ -249,21 +246,76 @@ const Program = () => {
         <Pagination.Next data-id="6" onClick={e=>handlePagesNext()}/>
         <Pagination.Last data-id="7" />
       </Pagination>
+      </Container>
       </div>
-      <div className="">
-          <Table responsive="sm" size="sm" hover striped bordered>
+      
+      <div>
+      <Table responsive="sm" size="sm" hover striped bordered>
               <thead>
-                <tr><th>Semana: {pages}</th><th className="text-center" colSpan="3">Segunda feira</th></tr>
-              </thead> 
+                <tr><th className="text-center"><Button
+        onClick={() => setOpen(!open)}
+        aria-controls="example-collapse-text"
+        aria-expanded={open}
+      >
+      Segunda-feira
+      </Button></th>
+      <th className="text-center"><Button
+        onClick={() => setOpen2(!open2)}
+        aria-controls="example-collapse-text"
+        aria-expanded={open2}
+      >
+      Terça-feira
+      </Button></th>
+      <th className="text-center"><Button
+        onClick={() => setOpen3(!open3)}
+        aria-controls="example-collapse-text"
+        aria-expanded={open3}
+      >
+      Quarta-feira
+      </Button></th>
+      <th className="text-center"><Button
+        onClick={() => setOpen4(!open4)}
+        aria-controls="example-collapse-text"
+        aria-expanded={open4}
+      >
+      Quinta-feira
+      </Button></th>
+      <th className="text-center"><Button
+        onClick={() => setOpen5(!open5)}
+        aria-controls="example-collapse-text"
+        aria-expanded={open5}
+      >
+      Sexta-feira
+      </Button></th><th className="text-center"><Button
+        onClick={() => setOpen6(!open6)}
+        aria-controls="example-collapse-text"
+        aria-expanded={open5}
+      >
+      Sábado
+      </Button></th><th className="text-center"><Button
+        onClick={() => setOpen7(!open7)}
+        aria-controls="example-collapse-text"
+        aria-expanded={open5}
+      >
+      Domingo
+      </Button></th></tr>
+              </thead>
+              <tbody></tbody>
+      </Table>
+      </div>
+      <Collapse in={open}>
+      <div id="example-collapse-text">
+          <Table responsive="sm" size="sm" hover striped bordered>
               <thead>
                 <tr><th>Executante</th><th>Descrição</th><th>OS</th><th>Data</th></tr>
               </thead> 
                 <tbody>
                 {usersMonday}
                 </tbody>      
-          </Table>
-            
+          </Table>    
       </div>
+      </Collapse>
+      <Collapse in={open2}>
       <div className="">
           <Table responsive="sm" size="sm" hover striped bordered>
               <thead>
@@ -277,7 +329,8 @@ const Program = () => {
                 </tbody>      
           </Table>   
       </div>
-
+      </Collapse>
+      <Collapse in={open3}>
       <div className="">
           <Table responsive="sm" size="sm" hover striped bordered>
               <thead>
@@ -291,7 +344,8 @@ const Program = () => {
                 </tbody>      
           </Table>   
       </div>
-
+      </Collapse>
+      <Collapse in={open4}>
       <div className="">
           <Table responsive="sm" size="sm" hover striped bordered>
               <thead>
@@ -305,7 +359,8 @@ const Program = () => {
                 </tbody>      
           </Table>   
       </div>
-
+      </Collapse>
+      <Collapse in={open5}>
       <div className="">
           <Table responsive="sm" size="sm" hover striped bordered>
               <thead>
@@ -319,7 +374,8 @@ const Program = () => {
                 </tbody>      
           </Table>   
       </div>
-
+      </Collapse>
+      <Collapse in={open6}>
       <div className="">
           <Table responsive="sm" size="sm" hover striped bordered>
               <thead>
@@ -333,7 +389,8 @@ const Program = () => {
                 </tbody>      
           </Table>   
       </div>
-
+      </Collapse>
+      <Collapse in={open7}>
       <div className="">
           <Table responsive="sm" size="sm" hover striped bordered>
               <thead>
@@ -347,7 +404,7 @@ const Program = () => {
                 </tbody>      
           </Table>   
       </div>
-      
+      </Collapse>
     </div>
     );
     
