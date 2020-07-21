@@ -1,46 +1,74 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import { doGet } from "../../helper/ApiHelper";
 import Pagination from 'react-bootstrap/Pagination';
 import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
 import Collapse from 'react-bootstrap/Collapse';
 import Button from 'react-bootstrap/Button';
+
+import axios from 'axios';
 //import PageItem from 'react-bootstrap/PageItem';
 import './styles.css';
+const API_BASE = process.env.REACT_APP_API_URL;
 //import { Preview } from "react-dropzone-uploader";
 
 const Program = () => {
 
-  
+  const initialState = {page: 2};
   const [person, setPerson] = useState([]);
   const [userOrdens, setUserOrdens] = useState([]);
+  const [progSemana, setProgSemanas] = useState([]);
   const [userProgs, setUserProgs] = useState([]);
   const [pages, setPages] = useState([]);
   const [previewPages, setPreviewPages] = useState([]);
   const [nextPages, setNextPages] = useState([]);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
   const [open4, setOpen4] = useState(false);
   const [open5, setOpen5] = useState(false);
   const [open6, setOpen6] = useState(false);
   const [open7, setOpen7] = useState(false);
+  const [state, dispatch] = useReducer(pagesReducer, initialState);
   let ListOrdensId = [];
-
+  
   useEffect(() => {
+    
     doGet("prog/ordem/")
     .then((ordensUsuarios) => setUserOrdens(ordensUsuarios));
+
     doGet("prog/semana/")
     .then((progsUsuarios) => setUserProgs(progsUsuarios));
     doGet("users").then((response) => setPerson(response));
-    setPreviewPages(1);
-    setPages(2);
-    setNextPages(3);
+    
+    dispatch({ type: 'paginaInicial' });
   }, []);
 
+  useEffect(() => {
+      axios.get(`${API_BASE}prog/semana/busca/${pages}`)
+          .then((response) => {
+          setProgSemanas(response);
+          }).catch((error) => {
+          console.log("error");
+          })             
+          }, [pages]);
+  
   if(!userOrdens || !userOrdens.length){
     return <h1>Loading...</h1>;
   }
+  
+  function pagesReducer(state, action) {
+    console.log(state.page)
+    switch (action.type) {
+      case 'paginaInicial':
+        return {...state, page: PrimeiraPage()};
+      case 'decrement':
+        return {...state, count: state.count - 1};
+      default:
+        return new Error();
+    }
+  }
+
  function handlePagesNext(){
    if (pages>=2 && pages<=50){
     setPages(pages+1);
@@ -56,11 +84,13 @@ const Program = () => {
 
   function PrimeiraPage(){
     const {months} = dateDiff("2020-01-01");
+    let firstPage = 2;
     if (months>1){
-    const firstPage = Math.trunc((months*30)/7)
+    firstPage = Math.trunc((months*30)/7)
     setPreviewPages(firstPage-1)
     setNextPages(firstPage+1)
     setPages(firstPage)}
+    return firstPage
   }
 
   function dateDiff(date) {
@@ -91,6 +121,7 @@ const Program = () => {
     return {years: years, months: months, days: days};
 }
 
+try {
       person.forEach (person=>{
         userOrdens.forEach (ListOrdensPeloId => { 
             const user = person.id;
@@ -115,6 +146,9 @@ const Program = () => {
               });
         });
       });
+    }catch (error) {
+      return console.log("não tem prog")
+    };
       
       const usersMonday = ListOrdensId.map((ordens) => {
         if (ordens.ddWeek === 2){
@@ -227,7 +261,8 @@ const Program = () => {
   return (
     <div>
       <header>
-      <span></span>
+      <span>{state.page}</span>
+      {/* <button onClick={() => dispatch({type: 'decrement'})}>-</button> */}
       </header>
       <div>
       <Container fluid="sm">
@@ -306,6 +341,9 @@ const Program = () => {
       <Collapse in={open}>
       <div id="example-collapse-text">
           <Table responsive="sm" size="sm" hover striped bordered>
+             <thead>
+                <tr><th>Semana: {pages}</th><th className="text-center" colSpan="3">Segunda feira</th></tr>
+              </thead>
               <thead>
                 <tr><th>Executante</th><th>Descrição</th><th>OS</th><th>Data</th></tr>
               </thead> 
