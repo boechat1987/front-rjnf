@@ -5,6 +5,7 @@ import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
 import Collapse from 'react-bootstrap/Collapse';
 import Button from 'react-bootstrap/Button';
+import Moment from 'react-moment';
 
 import axios from 'axios';
 //import PageItem from 'react-bootstrap/PageItem';
@@ -30,6 +31,7 @@ const Program = () => {
   const [open6, setOpen6] = useState(false);
   const [open7, setOpen7] = useState(false);
   const [state, dispatch] = useReducer(pagesReducer, initialState);
+  const dateToFormat = new Date();
   let ListOrdensId = [];
   
   useEffect(() => {
@@ -266,7 +268,8 @@ try {
   return (
     <div>
       <header>
-      <span></span>
+      <span>
+            <Moment>{dateToFormat}</Moment></span>
       {/* <button onClick={() => dispatch({type: 'decrement'})}>-</button> */}
       </header>
       {/* <div>
