@@ -47,12 +47,12 @@ const Program = () => {
   useEffect(() => {
       axios.get(`${API_BASE}prog/semana/busca/${pages}`)
           .then((response) => {
-          setProgSemanas(response);
+          setProgSemanas(response.data);
           }).catch((error) => {
           console.log("error");
           })             
           }, [pages]);
-  
+  // console.log(progSemana)
   if(!userOrdens || !userOrdens.length){
     return <h1>Loading...</h1>;
   }
@@ -130,7 +130,7 @@ try {
       person.forEach (person=>{
         userOrdens.forEach (ListOrdensPeloId => { 
             const user = person.id;
-              userProgs.forEach((program) => {
+            progSemana.forEach((program) => {
                 const progId = program.id;
                 if (ListOrdensPeloId.programacao_id === (parseInt(progId))){  
                   if (ListOrdensPeloId.user_id===(parseInt(user))){
