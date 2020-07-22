@@ -58,15 +58,18 @@ const Program = () => {
   }
   
   function pagesReducer(state, action) {
-    console.log(state.page)
+    
     switch (action.type) {
       case 'paginaInicial':
         return {...state, page: PrimeiraPage()};
-      case 'decrement':
-        return {...state, count: state.count - 1};
+      case 'next':
+        return {...state, page: handlePagesNext()};
+      case 'preview':
+        return {...state, page: handlePagesPreview()};
       default:
         return new Error();
     }
+    
   }
 
  function handlePagesNext(){
@@ -74,12 +77,14 @@ const Program = () => {
     setPages(pages+1);
     setNextPages(nextPages+1);
     setPreviewPages(previewPages+1);}
+    return pages+1;
   }
   function handlePagesPreview(){
     if (pages>2 && pages<=50){
     setPages(pages-1);
     setNextPages(nextPages-1);
     setPreviewPages(previewPages-1);}
+    return pages-1;
   }
 
   function PrimeiraPage(){
@@ -261,24 +266,24 @@ try {
   return (
     <div>
       <header>
-      <span>{state.page}</span>
+      <span></span>
       {/* <button onClick={() => dispatch({type: 'decrement'})}>-</button> */}
       </header>
-      <div>
+      {/* <div>
       <Container fluid="sm">
       <input type="button" className="button" value="Atualizar" onClick={e=>PrimeiraPage()}></input>
       </Container>
-      </div>
+      </div> */}
       
       <div className="items-grid">
       <Container fluid="sm">
-      <Pagination >
+      <Pagination size="lg">
         <Pagination.First data-id="1" />
-        <Pagination.Prev  data-id="2" onClick={e=>handlePagesPreview()}/>
+        <Pagination.Prev  data-id="2" onClick={e=>dispatch({ type: 'preview' })}/>
         <Pagination.Item data-id="3" >{previewPages}</Pagination.Item>
         <Pagination.Item data-id="4" active >{pages}</Pagination.Item>
         <Pagination.Item data-id="5" >{nextPages}</Pagination.Item>
-        <Pagination.Next data-id="6" onClick={e=>handlePagesNext()}/>
+        <Pagination.Next data-id="6" onClick={e=>dispatch({ type: 'next' })}/>
         <Pagination.Last data-id="7" />
       </Pagination>
       </Container>
