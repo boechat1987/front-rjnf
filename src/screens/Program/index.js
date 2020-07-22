@@ -51,10 +51,10 @@ const Program = () => {
           .then((response) => {
           setProgSemanas(response.data);
           }).catch((error) => {
-          console.log("error");
+          console.log(error, "error");
           })             
           }, [pages]);
-  // console.log(progSemana)
+   console.log(progSemana)
   if(!userOrdens || !userOrdens.length){
     return <h1>Loading...</h1>;
   }
@@ -132,7 +132,7 @@ try {
       person.forEach (person=>{
         userOrdens.forEach (ListOrdensPeloId => { 
             const user = person.id;
-            progSemana.forEach((program) => {
+              progSemana.forEach((program) => {
                 const progId = program.id;
                 if (ListOrdensPeloId.programacao_id === (parseInt(progId))){  
                   if (ListOrdensPeloId.user_id===(parseInt(user))){
