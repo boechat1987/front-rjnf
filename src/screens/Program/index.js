@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useReducer } from "react";
-import { doGet } from "../../helper/ApiHelper";
+import { useParams } from "react-router-dom";
 import Pagination from 'react-bootstrap/Pagination';
 import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
@@ -16,11 +16,10 @@ const API_BASE = process.env.REACT_APP_API_URL;
 const Program = () => {
 
   const initialState = {page: 2};
-  const [person, setPerson] = useState([]);
+  const [person, setPerson] = useState(null);
   const [userOrdens, setUserOrdens] = useState([]);
   const [progSemana, setProgSemanas] = useState([]);
-  const [userProgs, setUserProgs] = useState([]);
-  const [pages, setPages] = useState([]);
+  const [pages, setPages] = useState(false);
   const [previewPages, setPreviewPages] = useState([]);
   const [nextPages, setNextPages] = useState([]);
   const [open, setOpen] = useState(true);
@@ -31,30 +30,45 @@ const Program = () => {
   const [open6, setOpen6] = useState(false);
   const [open7, setOpen7] = useState(false);
   const [state, dispatch] = useReducer(pagesReducer, initialState);
+  const { id } = useParams();
   const dateToFormat = new Date();
   let ListOrdensId = [];
   
   useEffect(() => {
-    
-    doGet("prog/ordem/")
-    .then((ordensUsuarios) => setUserOrdens(ordensUsuarios));
+    axios.get(`${API_BASE}users/${id}`)
+          .then((response) => {
+            setPerson(response.data);
+          }).catch((error) => {
+          console.log(error, "error");
+          })             
+          }, [id]);
 
-    doGet("prog/semana/")
-    .then((progsUsuarios) => setUserProgs(progsUsuarios));
-    doGet("users").then((response) => setPerson(response));
-    
+  useEffect(() => {
+    if (id){
+    axios.get(`${API_BASE}prog/ordem/`)
+    .then((ordensUsuarios) => {
+      setUserOrdens(ordensUsuarios.data);
+    }).catch((error) => {
+    console.log(error, "error");
+    })}       
+             
+  }, [id]);
+
+  useEffect(()=>{
     dispatch({ type: 'paginaInicial' });
   }, []);
 
   useEffect(() => {
-      axios.get(`${API_BASE}prog/semana/busca/${pages}`)
+    if (pages){
+        axios.get(`${API_BASE}prog/semana/busca/${pages}`)
           .then((response) => {
           setProgSemanas(response.data);
           }).catch((error) => {
           console.log(error, "error");
-          })             
+          })}
+
           }, [pages]);
-   console.log(progSemana)
+
   if(!userOrdens || !userOrdens.length){
     return <h1>Loading...</h1>;
   }
@@ -129,7 +143,7 @@ const Program = () => {
 }
 
 try {
-      person.forEach (person=>{
+        //quando for fazer para aperecer todos tem que colocar um person.foreach aqui
         userOrdens.forEach (ListOrdensPeloId => { 
             const user = person.id;
               progSemana.forEach((program) => {
@@ -152,9 +166,9 @@ try {
                 }
               });
         });
-      });
+      
     }catch (error) {
-      return console.log("não tem prog")
+      return console.log(error, "não tem prog")
     };
       
       const usersMonday = ListOrdensId.map((ordens) => {
@@ -292,7 +306,7 @@ try {
       </Container>
       </div>
       
-      <div>
+      <div><Container fluid="sm">
       <Table responsive="sm" size="sm" hover striped bordered>
               <thead>
                 <tr><th className="text-center"><Button
@@ -345,7 +359,9 @@ try {
               </thead>
               <tbody></tbody>
       </Table>
+      </Container>
       </div>
+      
       <Collapse in={open}>
       <div id="example-collapse-text">
           <Table responsive="sm" size="sm" hover striped bordered>

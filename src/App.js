@@ -19,19 +19,19 @@ const App = () => {
             <Route path="/Program/Usuario/:id">
                 <ProgramUsuario />
             </Route>
-            <Route path="/Program" exact>
+            <Route path="/Program/:id" >
                 <Program />
             </Route>
-            <Route path="/Drop" exact>
+            <Route path="/Drop" >
                 <Drop />
             </Route>
-            <Route path="/Signin" exact>
+            <Route path="/Signin" >
                 <Signin />
             </Route>
-            <Route path="/Register" exact>
+            <Route path="/Register" >
                 <Register />
             </Route>
-            <Route path="/Transport" exact>
+            <Route path="/Transport" >
                 <Transport />
             </Route>
             <Route path="/" exact>

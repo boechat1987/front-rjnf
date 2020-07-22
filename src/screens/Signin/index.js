@@ -22,7 +22,7 @@ export default function Logon(){
                 users.forEach (p=> {
                     if (username === p.username){
                         id = (p.id);
-                        return history.push(`/Program/Usuario/${id}`);
+                        return history.push(`/Program/${id}`);
                     }
                   });
                 /*const response = await api.post('sessions', {id});

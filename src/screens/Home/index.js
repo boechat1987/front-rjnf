@@ -17,7 +17,7 @@ const Home = () => {
 
   const usersList = users.map((p) => {
     const id = p.id;
-    return <li key={id}><Link to={`/Program/Usuario/${id}`}>{p.username}</Link></li>;
+    return <li key={id}><Link to={`/Program/${id}`}>{p.username}</Link></li>;
 
   });
   
