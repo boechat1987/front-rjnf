@@ -8,28 +8,30 @@ import Button from 'react-bootstrap/Button';
 import Moment from 'react-moment';
 
 import axios from 'axios';
-//import PageItem from 'react-bootstrap/PageItem';
 import './styles.css';
 const API_BASE = process.env.REACT_APP_API_URL;
-//import { Preview } from "react-dropzone-uploader";
 
 const Program = () => {
 
-  const initialState = {page: 2};
+  const initialState = {
+    page: 2,
+    open: true,
+    open2: false,
+    open3: false,
+    open4: false,
+    open5: false,
+    open6: false,
+    open7: false,
+
+  };
   const [person, setPerson] = useState(null);
   const [userOrdens, setUserOrdens] = useState([]);
   const [progSemana, setProgSemanas] = useState([]);
   const [pages, setPages] = useState(false);
   const [previewPages, setPreviewPages] = useState([]);
   const [nextPages, setNextPages] = useState([]);
-  const [open, setOpen] = useState(true);
-  const [open2, setOpen2] = useState(false);
-  const [open3, setOpen3] = useState(false);
-  const [open4, setOpen4] = useState(false);
-  const [open5, setOpen5] = useState(false);
-  const [open6, setOpen6] = useState(false);
-  const [open7, setOpen7] = useState(false);
   const [state, dispatch] = useReducer(pagesReducer, initialState);
+  const { open, open2, open3, open4, open5, open6, open7 } = state;
   const { id } = useParams();
   const dateToFormat = new Date();
   let ListOrdensId = [];
@@ -82,6 +84,48 @@ const Program = () => {
         return {...state, page: handlePagesNext()};
       case 'preview':
         return {...state, page: handlePagesPreview()};
+      case 'open':
+        if (state.open === true)
+          return {...state, open: false};
+        else {
+          return {...state, open: true}
+        }
+      case 'open2':
+        if (state.open2 === true)
+          return {...state, open2: false};
+        else {
+          return {...state, open2: true}
+        }
+      case 'open3':
+        if (state.open3 === true)
+          return {...state, open3: false};
+        else {
+          return {...state, open3: true}
+        }
+      case 'open4':
+        if (state.open4 === true)
+          return {...state, open4: false};
+        else {
+          return {...state, open4: true}
+        }
+      case 'open5':
+        if (state.open5 === true)
+          return {...state, open5: false};
+        else {
+          return {...state, open5: true}
+        }
+      case 'open6':
+        if (state.open6 === true)
+          return {...state, open6: false};
+        else {
+          return {...state, open6: true}
+        }
+      case 'open7':
+        if (state.open7 === true)
+          return {...state, open7: false};
+        else {
+          return {...state, open7: true}
+        }
       default:
         return new Error();
     }
@@ -95,6 +139,7 @@ const Program = () => {
     setPreviewPages(previewPages+1);}
     return pages+1;
   }
+
   function handlePagesPreview(){
     if (pages>2 && pages<=50){
     setPages(pages-1);
@@ -284,13 +329,7 @@ try {
       <header>
       <span>
             <Moment>{dateToFormat}</Moment></span>
-      {/* <button onClick={() => dispatch({type: 'decrement'})}>-</button> */}
       </header>
-      {/* <div>
-      <Container fluid="sm">
-      <input type="button" className="button" value="Atualizar" onClick={e=>PrimeiraPage()}></input>
-      </Container>
-      </div> */}
       
       <div className="items-grid">
       <Container fluid="sm">
@@ -310,47 +349,47 @@ try {
       <Table responsive="sm" size="sm" hover striped bordered>
               <thead>
                 <tr><th className="text-center"><Button
-        onClick={() => setOpen(!open)}
+        onClick={() => dispatch({ type: 'open' })}
         aria-controls="example-collapse-text"
         aria-expanded={open}
       >
       Segunda-feira
       </Button></th>
       <th className="text-center"><Button
-        onClick={() => setOpen2(!open2)}
+        onClick={() => dispatch({ type: 'open2' })}
         aria-controls="example-collapse-text"
         aria-expanded={open2}
       >
       Terça-feira
       </Button></th>
       <th className="text-center"><Button
-        onClick={() => setOpen3(!open3)}
+        onClick={() => dispatch({ type: 'open3' })}
         aria-controls="example-collapse-text"
         aria-expanded={open3}
       >
       Quarta-feira
       </Button></th>
       <th className="text-center"><Button
-        onClick={() => setOpen4(!open4)}
+        onClick={() => dispatch({ type: 'open4' })}
         aria-controls="example-collapse-text"
         aria-expanded={open4}
       >
       Quinta-feira
       </Button></th>
       <th className="text-center"><Button
-        onClick={() => setOpen5(!open5)}
+        onClick={() => dispatch({ type: 'open5' })}
         aria-controls="example-collapse-text"
         aria-expanded={open5}
       >
       Sexta-feira
       </Button></th><th className="text-center"><Button
-        onClick={() => setOpen6(!open6)}
+        onClick={() => dispatch({ type: 'open6' })}
         aria-controls="example-collapse-text"
         aria-expanded={open5}
       >
       Sábado
       </Button></th><th className="text-center"><Button
-        onClick={() => setOpen7(!open7)}
+        onClick={() => dispatch({ type: 'open7' })}
         aria-controls="example-collapse-text"
         aria-expanded={open5}
       >

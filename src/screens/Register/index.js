@@ -30,7 +30,7 @@ export default function Register(){
             method: 'POST',
             data: data,
             }).then((response) => {
-                alert(`Seu ID de acesso: ${response.data.username}`);
+                alert(`Seu ID de acesso: ${response.data.user.username}`);
                 history.push('/Signin');
             }).catch((error) => {
                 alert(`Erro no cadastro, tente novamente: ${error}`);
