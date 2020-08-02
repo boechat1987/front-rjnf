@@ -6,10 +6,14 @@ import Container from 'react-bootstrap/Container';
 import Collapse from 'react-bootstrap/Collapse';
 import Button from 'react-bootstrap/Button';
 import Moment from 'react-moment';
-
+import api from '../../helper/api';
 import axios from 'axios';
+import {isAuthenticated, getToken} from '../../helper/token';
+
 import './styles.css';
 const API_BASE = process.env.REACT_APP_API_URL;
+
+
 
 const Program = () => {
 
@@ -24,6 +28,7 @@ const Program = () => {
     open7: false,
 
   };
+
   const [person, setPerson] = useState(null);
   const [userOrdens, setUserOrdens] = useState([]);
   const [progSemana, setProgSemanas] = useState([]);
@@ -35,14 +40,26 @@ const Program = () => {
   const { id } = useParams();
   const dateToFormat = new Date();
   let ListOrdensId = [];
-  
-  useEffect(() => {
+
+  /* useEffect(() => {
     axios.get(`${API_BASE}users/${id}`)
           .then((response) => {
             setPerson(response.data);
           }).catch((error) => {
           console.log(error, "error");
           })             
+          }, [id]); */
+  
+  useEffect(() => {
+    console.log(isAuthenticated(), getToken())
+    if (isAuthenticated()){
+          api.get(`users/${id}`)
+          .then((response) => {
+            setPerson(response.data);
+          }).catch((error) => {
+          console.log(error, "error");
+          })
+    }
           }, [id]);
 
   useEffect(() => {
@@ -188,7 +205,9 @@ const Program = () => {
 }
 
 try {
-        //quando for fazer para aperecer todos tem que colocar um person.foreach aqui
+        if(person === null){
+          setPerson({id: 0});
+        }//quando for fazer para aperecer todos tem que colocar um person.foreach aqui
         userOrdens.forEach (ListOrdensPeloId => { 
             const user = person.id;
               progSemana.forEach((program) => {

@@ -4,28 +4,38 @@
 // // import logo from '../../assets/logo.png';
 // import { doGet } from "../../helper/ApiHelper";
 // import './styles.css';
+
 import React, { useReducer } from 'react';
+//import api from '../../helper/api';
+import {loginToken, logoutToken, isAuthenticated, saveIdLocal, leaveIdLocal, saveUserLocal, leaveUserLocal, getSavedUserLocal} from '../../helper/token';
 import axios from 'axios';
+
 const API_BASE = process.env.REACT_APP_API_URL;
 
 async function login(user){
-  let retornoAxios;
+  let retornoAxios = {retorno: false, erro: '', response:''};
   let params = {
-    users: user,   
+    users: user,
   }
         await axios.post(`${API_BASE}users/authenticate`, params, {
-          })      
+          })
           .then((response) => {
-            retornoAxios = true
-            console.log('response',response.data)
+            retornoAxios.retorno = true;
+              loginToken(response.data.access_token.token);
+              saveIdLocal(response.data.user.id);
+              saveUserLocal(response.data.user.username);
+              console.log(response.data.user.username)
+            retornoAxios.response = response.data;
             return true
           })
           .catch((error) => {
-            retornoAxios = false
-            console.log('error',error.response)
+            retornoAxios.retorno = false;
+            console.log('error',error.response);
+            retornoAxios.erro = error.response;
            return false
             //dispatch(userUpdateProfileFail())
           })
+          
   return retornoAxios
 };
 
@@ -35,6 +45,15 @@ function loginReducer(state, action) {
         return {
           ...state,
           [action.fieldName]: action.payload,
+        };
+      }
+      case 'alreadyLoggedIn': {
+        const name = getSavedUserLocal();
+        return {
+          ...state,
+          username: name,
+          isLoggedIn: true,
+          isLoading: false,
         };
       }
       case 'login': {
@@ -61,7 +80,20 @@ function loginReducer(state, action) {
           password: '',
         };
       }
+      case 'error2': {
+        return {
+          ...state,
+          error: 'Não autorizado, status 401',
+          isLoggedIn: false,
+          isLoading: false,
+          username: '',
+          password: '',
+        };
+      }
       case 'logOut': {
+        logoutToken();
+        leaveIdLocal();
+        leaveUserLocal();
         return {
           ...state,
           isLoggedIn: false,
@@ -84,18 +116,28 @@ function loginReducer(state, action) {
   export default function LoginUseReducer() {
     const [state, dispatch] = useReducer(loginReducer, initialState);
     const { username, password, isLoading, error, isLoggedIn } = state;
-
-    const onSubmit = async (e) => {
+      
+      if (isAuthenticated() && !isLoggedIn){
+        dispatch({
+          type: 'alreadyLoggedIn',
+        })
+            dispatch({ type: 'alreadyLoggedIn'})
+      }
+      
+      const onSubmit = async (e) => {
       e.preventDefault();
-  
+      
       dispatch({ type: 'login' });
-  
+      
       try {
        const testaValidadeUsuario = await login({username,password});
-        
-          if (testaValidadeUsuario === true){
+          if (testaValidadeUsuario.retorno === true){
             dispatch({ type: 'success' });
+            return
             }
+          if (testaValidadeUsuario.erro.data.message === "nao autorizado" && testaValidadeUsuario.erro.data.message != null){
+            dispatch({ type: 'error2' });
+          }
           else{
             dispatch({ type: 'error' });    
           } 
@@ -103,13 +145,12 @@ function loginReducer(state, action) {
         console.log('error',error)
       }
     };
-  
     return (
       <div className='App'>
         <div className='login-container'>
           {isLoggedIn ? (
             <>
-              <h1>Bem Vindo {username}!</h1>
+              <h1>Bem Vindo, {username}!</h1>
               <button onClick={() => dispatch({ type: 'logOut' })}>
                 Sair
               </button>

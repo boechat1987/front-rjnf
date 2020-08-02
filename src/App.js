@@ -35,6 +35,7 @@ const App = () => {
                 <Transport />
             </Route>
             <Route path="/" exact>
+                <Signin />
                 <Home />
             </Route>
         </Switch>
