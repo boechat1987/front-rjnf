@@ -62,7 +62,7 @@ export default function Register(){
                         onChange={e => setPassword(e.target.value)}
                     />
                     <button className="button" type="submit">Cadastrar </button>
-                    <Link className="back-link" to="/Signin"> 
+                    <Link className="back-link" to="/Home"> 
                         <FiArrowLeft size={16} color="#E02041" />
                         Sign in
                     </Link>

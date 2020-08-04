@@ -6,7 +6,7 @@ import Program from "./screens/Program";
 import Register from "./screens/Register";
 import Drop from "./screens/Program/dropzone.js";
 import ProgramUsuario from "./screens/Program/ProgramUsuario";
-import Menu from "./screens/Bootstrap";
+/* import Menu from "./screens/Bootstrap"; */
 import Transport from "./screens/Transport"; 
 import './global.css';
 
@@ -14,7 +14,7 @@ const App = () => {
 
     return (
     <BrowserRouter>
-        <Menu />
+        {/* <Menu /> */}
         <Switch>
             <Route path="/Program/Usuario/:id">
                 <ProgramUsuario />

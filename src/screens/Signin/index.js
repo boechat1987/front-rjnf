@@ -3,7 +3,7 @@
 // import { FiLogIn } from 'react-icons/fi';
 // // import logo from '../../assets/logo.png';
 // import { doGet } from "../../helper/ApiHelper";
-// import './styles.css';
+import './styles.css';
 
 import React, { useReducer } from 'react';
 //import api from '../../helper/api';
@@ -24,7 +24,6 @@ async function login(user){
               loginToken(response.data.access_token.token);
               saveIdLocal(response.data.user.id);
               saveUserLocal(response.data.user.username);
-              console.log(response.data.user.username)
             retornoAxios.response = response.data;
             return true
           })
@@ -146,12 +145,12 @@ function loginReducer(state, action) {
       }
     };
     return (
-      <div className='App'>
+      <div className='app'>
         <div className='login-container'>
           {isLoggedIn ? (
             <>
               <h1>Bem Vindo, {username}!</h1>
-              <button onClick={() => dispatch({ type: 'logOut' })}>
+              <button className="submit"onClick={() => dispatch({ type: 'logOut' })}>
                 Sair
               </button>
             </>
