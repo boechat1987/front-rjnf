@@ -27,6 +27,7 @@ const App = () => {
             </Route>
             <Route path="/Signin" >
                 <Signin />
+                <Home />
             </Route>
             <Route path="/Register" >
                 <Register />

@@ -1,5 +1,5 @@
 // import React, {useState, useEffect} from 'react';
-// import {Link, useHistory} from 'react-router-dom';
+//import {useHistory} from 'react-router-dom';
 // import { FiLogIn } from 'react-icons/fi';
 // // import logo from '../../assets/logo.png';
 // import { doGet } from "../../helper/ApiHelper";
@@ -9,6 +9,7 @@ import React, { useReducer } from 'react';
 //import api from '../../helper/api';
 import {loginToken, logoutToken, isAuthenticated, saveIdLocal, leaveIdLocal, saveUserLocal, leaveUserLocal, getSavedUserLocal} from '../../helper/token';
 import axios from 'axios';
+
 
 const API_BASE = process.env.REACT_APP_API_URL;
 
@@ -32,7 +33,6 @@ async function login(user){
             console.log('error',error.response);
             retornoAxios.erro = error.response;
            return false
-            //dispatch(userUpdateProfileFail())
           })
           
   return retornoAxios
@@ -95,9 +95,10 @@ function loginReducer(state, action) {
         leaveUserLocal();
         return {
           ...state,
+          refresh: true,
           isLoggedIn: false,
         };
-      }
+      }    
       default:
         return state;
     }
@@ -108,21 +109,25 @@ function loginReducer(state, action) {
     password: '',
     isLoading: false,
     error: '',
-    token:'',
     isLoggedIn: false,
   };
   
   export default function LoginUseReducer() {
     const [state, dispatch] = useReducer(loginReducer, initialState);
     const { username, password, isLoading, error, isLoggedIn } = state;
-      
+
       if (isAuthenticated() && !isLoggedIn){
         dispatch({
           type: 'alreadyLoggedIn',
         })
-            dispatch({ type: 'alreadyLoggedIn'})
       }
       
+      const handleLogut = async (e)=>{
+        e.preventDefault();
+        dispatch({ type: 'logOut' })
+        window.location.reload(false)
+      }
+
       const onSubmit = async (e) => {
       e.preventDefault();
       
@@ -132,8 +137,9 @@ function loginReducer(state, action) {
        const testaValidadeUsuario = await login({username,password});
           if (testaValidadeUsuario.retorno === true){
             dispatch({ type: 'success' });
-            return
+            window.location.reload(false)
             }
+          console.log(testaValidadeUsuario)
           if (testaValidadeUsuario.erro.data.message === "nao autorizado" && testaValidadeUsuario.erro.data.message != null){
             dispatch({ type: 'error2' });
           }
@@ -150,7 +156,7 @@ function loginReducer(state, action) {
           {isLoggedIn ? (
             <>
               <h1>Bem Vindo, {username}!</h1>
-              <button className="submit"onClick={() => dispatch({ type: 'logOut' })}>
+              <button className="submit"onClick={handleLogut}>
                 Sair
               </button>
             </>

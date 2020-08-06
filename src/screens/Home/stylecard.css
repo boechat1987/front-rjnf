@@ -6,6 +6,16 @@
       column-gap: 20px;
     }
     
+    .options-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      text-decoration: none;
+      font-size: 0.7em;
+      color: var(--red);
+      background-color: white;
+      border: none;
+    }
     /* section {
       break-inside: avoid;
     }
@@ -80,6 +90,10 @@
   p {
     margin-bottom: 1em;
     padding: 0 10px;
+  }
+
+  .await-login {
+    text-align: center;
   }
   
   .info-link {

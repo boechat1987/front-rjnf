@@ -7,68 +7,70 @@ import { ReactComponent as Logo } from "../../assets/logo.svg";
 import './stylecardreset.css';
 import './styles.css';
 import './stylecard.css';
+import {getSavedIdLocal} from '../../helper/token';
 
 const Home = () => {
 
-
-
   return(
     <div className="background">
-    <div className="body">
-      <header>
-      <h1 className="title">Escala da Malha</h1>
-      <div className="options">
-        <button href="#" className="options-link">Programação</button>
-        <button href="#2" className="options-link">Sobreaviso</button>
-        <button href="#3" className="options-link">Transporte</button>
-      </div>
-      </header>
-      <div className="main">
-            <div className="section">
-              <h2>Programação Semanal</h2>
-              <p>Some Text goes here, some text goes here, some text goes here, some text goes here.</p>
-              <button href="#" className="info-link">Mais...</button>
-            </div>
-            <div className="section">
-              <h2>Sobreaviso</h2>
-              <p>Some Text goes here, some text goes here, some text goes here, some text goes here.</p>
-              <Logo
-                alt=""
-                width="50"
-                height="50"
-                className="d-inline-block align-top"
-              />
-              {/* <img className="section-img" src="Logo" alt="important graph"></img> */}
-              <button href="#" className="info-link">Mais...</button>
-            </div>
-            <div className="section">
-              <h2>Transporte</h2>
-              <Logo
-                alt=""
-                width="50"
-                height="50"
-                className="d-inline-block align-top"
-              />
-              <p>Some Text goes here, some text goes here, some text goes here, some text goes here.</p>
-              <button href="#" className="info-link">Mais...</button>
-            </div>
-            <div className="section">
-              <h2>Dados Usuário</h2>
-              <p>Some Text goes here, some text goes here, some text goes here, some text goes here.</p>
-              <button className="info-link" href="#" >Mais...</button>
-            </div>
-            <div className="section">
-              <h2 className="bigtitle-title">Avisos / Pendências</h2>
-              <p>Some Text goes here, some text goes here, some text goes here, some text goes here.</p>
-              <button href="#" className="info-link">Mais...</button>
-            </div>
-            <div className="section">
-              <h2>Outros</h2>
-              <p>Some Text goes here, some text goes here, some text goes here, some text goes here.</p>
-              <button href="#" className="info-link">Mais...</button>
-            </div>
-      </div>
-  </div>
+      {getSavedIdLocal() ?
+      <div className="body">
+        <header>
+        <h1 className="title">Escala da Malha</h1>
+        <div className="options">
+          <button href="#" className="options-link">Programação</button>
+          <h3>|</h3>
+          <button href="#2" className="options-link">Sobreaviso</button>
+          <h3>|</h3>
+          <button href="#3" className="options-link">Transporte</button>
+        </div>
+        </header>
+        <div className="main">
+              <div className="section">
+                <h2>Programação Semanal</h2>
+                <p>Some Text goes here, some text goes here, some text goes here, some text goes here.</p>
+                <button href="#" className="info-link">Mais...</button>
+              </div>
+              <div className="section">
+                <h2>Sobreaviso</h2>
+                <p>Some Text goes here, some text goes here, some text goes here, some text goes here.</p>
+                <Logo
+                  alt=""
+                  width="50"
+                  height="50"
+                  className="d-inline-block align-top"
+                />
+                {/* <img className="section-img" src="Logo" alt="important graph"></img> */}
+                <button href="#" className="info-link">Mais...</button>
+              </div>
+              <div className="section">
+                <h2>Transporte</h2>
+                <Logo
+                  alt=""
+                  width="50"
+                  height="50"
+                  className="d-inline-block align-top"
+                />
+                <p>Some Text goes here, some text goes here, some text goes here, some text goes here.</p>
+                <button href="#" className="info-link">Mais...</button>
+              </div>
+              <div className="section">
+                <h2>Dados Usuário</h2>
+                <p>Some Text goes here, some text goes here, some text goes here, some text goes here.</p>
+                <button className="info-link" href="#" >Mais...</button>
+              </div>
+              <div className="section">
+                <h2 className="bigtitle-title">Avisos / Pendências</h2>
+                <p>Some Text goes here, some text goes here, some text goes here, some text goes here.</p>
+                <button href="#" className="info-link">Mais...</button>
+              </div>
+              <div className="section">
+                <h2>Outros</h2>
+                <p>Some Text goes here, some text goes here, some text goes here, some text goes here.</p>
+                <button href="#" className="info-link">Mais...</button>
+              </div>
+        </div>
+    </div> : <p className="await-login">Aguardando Login</p>}
   </div>)
   /* const [users, setUsers] = useState([]);
   
