@@ -1,22 +1,86 @@
-import React from "react"; 
+import React, { useEffect, useState} from "react"; 
 /*import React, { useState, useEffect } from "react"; 
 import { Link } from "react-router-dom";
 import {isAuthenticated} from '../../helper/token';
 import { doGet } from "../../helper/ApiHelper"; */
 import { ReactComponent as Logo } from "../../assets/logo.svg";
+import { getWeek ,format, getDay } from 'date-fns'
+import { ptBR, enUS } from 'date-fns/locale'
+
+
+import axios from 'axios';
+
+import {getSavedIdLocal} from '../../helper/token';
+
 import './stylecardreset.css';
 import './styles.css';
 import './stylecard.css';
-import {getSavedIdLocal} from '../../helper/token';
+
+const API_BASE = process.env.REACT_APP_API_URL;
 
 const Home = () => {
+
+const user_id = getSavedIdLocal();
+const [userOrdens, setUserOrdens] = useState([]);
+
+const hoje = format(new Date(), 'eeee, dd/MM/yyyy',{locale:ptBR});
+const hojeUS = format(new Date(), 'yyyy-MM-dd',{locale:enUS});
+const semanaAtual = getWeek(new Date());
+const result = getDay(new Date(), 'dd/MM/yyyy',{locale:ptBR})
+let programOfTheDay = [];
+
+useEffect(() => {
+  if (user_id){
+  axios.get(`${API_BASE}prog/ordem/busca/${semanaAtual}`, {params: {
+    user_id: user_id}
+  })
+  .then((ordensUsuarios) => {
+    setUserOrdens(ordensUsuarios.data);
+  }).catch((error) => {
+  console.log(error, "error");
+  })}       
+           
+}, [user_id, semanaAtual]);
+
+  try {
+  userOrdens.forEach (ListOrdensPeloDia => {
+    if (ListOrdensPeloDia.ordems.length !== 0){
+        for (let days of ListOrdensPeloDia.ordems){
+          const data = ListOrdensPeloDia.data.split("T",1);
+          programOfTheDay.push(
+                    {
+                        data: data[0],
+                        text: days.text,
+                        prog_id: days.programacao_id,
+                        numero: days.numero,
+                        osId: days.id
+                    })
+         }
+    }
+  });
+  }catch (error) {
+    return console.log(error, "não tem prog")
+  };
+  
+  const showUserProgram = programOfTheDay.map((showprog) => {
+    if (hojeUS === showprog.data){
+      const osId = showprog.osId;
+      return <li key={osId}>
+      <strong>Numero OS:</strong> {showprog.numero} <br></br>
+      <strong>Descrição da ordem:</strong> {showprog.text} <br></br> 
+      </li>;
+    }
+    return null
+  });
+console.log(programOfTheDay)
 
   return(
     <div className="background">
       {getSavedIdLocal() ?
       <div className="body">
         <header>
-        <h1 className="title">Escala da Malha</h1>
+      <h1 className="title">{hoje} </h1>
+      <h2 className="subtitle">Semana:{semanaAtual}</h2>
         <div className="options">
           <button href="#" className="options-link">Programação</button>
           <h3>|</h3>
@@ -27,8 +91,8 @@ const Home = () => {
         </header>
         <div className="main">
               <div className="section">
-                <h2>Programação Semanal</h2>
-                <p>Some Text goes here, some text goes here, some text goes here, some text goes here.</p>
+                <h2>Programação Do Dia</h2>
+                <p>{showUserProgram}</p>
                 <button href="#" className="info-link">Mais...</button>
               </div>
               <div className="section">
@@ -70,7 +134,7 @@ const Home = () => {
                 <button href="#" className="info-link">Mais...</button>
               </div>
         </div>
-    </div> : <p className="await-login">Aguardando Login</p>}
+      </div> : <p className="await-login">Desenvolvido para navegador Chrome</p>}
   </div>)
   /* const [users, setUsers] = useState([]);
   
