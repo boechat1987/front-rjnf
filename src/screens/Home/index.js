@@ -97,7 +97,7 @@ console.log(programOfTheDay)
         <div className="main">
               <div className="section">
                 <h2>Programação Do Dia</h2>
-                {showUserProgram}
+                {showUserProgram.length ? showUserProgram : <div>Não há programação cadastrada</div>}
                 <button href="#" className="info-link">Mais...</button>
               </div>
               <div className="section">
