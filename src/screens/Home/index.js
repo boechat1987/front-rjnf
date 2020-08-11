@@ -3,14 +3,14 @@ import React, { useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 import {isAuthenticated} from '../../helper/token';
 import { doGet } from "../../helper/ApiHelper"; */
-import { ReactComponent as Logo } from "../../assets/logo.svg";
+/* import { ReactComponent as Logo } from "../../assets/logo.svg"; */
 import { getWeek ,format, getDay } from 'date-fns'
 import { ptBR, enUS } from 'date-fns/locale'
 
 
 import axios from 'axios';
 
-import {getSavedIdLocal} from '../../helper/token';
+import {getSavedIdLocal, getSavedUserLocal} from '../../helper/token';
 
 import './stylecardreset.css';
 import './styles.css';
@@ -21,9 +21,12 @@ const API_BASE = process.env.REACT_APP_API_URL;
 const Home = () => {
 
 const user_id = getSavedIdLocal();
+const user_name = getSavedUserLocal();
 const [userOrdens, setUserOrdens] = useState([]);
 
 const hoje = format(new Date(), 'eeee, dd/MM/yyyy',{locale:ptBR});
+const hojeBR = format(new Date(), 'dd/MM',{locale:ptBR});
+const hojeDiaSemana = format(new Date(), 'eeee',{locale:ptBR});
 const hojeUS = format(new Date(), 'yyyy-MM-dd',{locale:enUS});
 const semanaAtual = getWeek(new Date());
 const result = getDay(new Date(), 'dd/MM/yyyy',{locale:ptBR})
@@ -66,8 +69,8 @@ useEffect(() => {
     if (hojeUS === showprog.data){
       const osId = showprog.osId;
       return <li key={osId}>
-      <strong>Numero OS:</strong> {showprog.numero} <br></br>
-      <strong>Descrição da ordem:</strong> {showprog.text} <br></br> 
+      <ul><strong>Numero OS:</strong> {showprog.numero}</ul>
+      <ul><strong>Descrição da ordem:</strong> {showprog.text}</ul>
       </li>;
     }
     return null
@@ -92,45 +95,62 @@ console.log(programOfTheDay)
         <div className="main">
               <div className="section">
                 <h2>Programação Do Dia</h2>
-                <p>{showUserProgram}</p>
+                <div>{showUserProgram}</div>
                 <button href="#" className="info-link">Mais...</button>
               </div>
               <div className="section">
                 <h2>Sobreaviso</h2>
-                <p>Some Text goes here, some text goes here, some text goes here, some text goes here.</p>
-                <Logo
+                <div className="wrapper">
+                      <div className="one">Dia</div>
+                        <div className="one-two">{hojeBR}</div>
+                      <div className="two">Semana</div>
+                        <div className="two-two">{hojeDiaSemana}</div>
+                      <div className="three">Técnico</div>
+                        <div className="Three-two">--</div>
+                </div>
+                {/* <Logo
                   alt=""
                   width="50"
                   height="50"
                   className="d-inline-block align-top"
-                />
+                /> */}
                 {/* <img className="section-img" src="Logo" alt="important graph"></img> */}
                 <button href="#" className="info-link">Mais...</button>
               </div>
               <div className="section">
                 <h2>Transporte</h2>
-                <Logo
+                {/* <Logo
                   alt=""
                   width="50"
                   height="50"
                   className="d-inline-block align-top"
-                />
-                <p>Some Text goes here, some text goes here, some text goes here, some text goes here.</p>
+                /> */}
+                <div className="wrapperMot">
+                      <div className="oneMot">Dia</div>
+                        <div className="one-twoMot">{hojeBR}</div>
+                      <div className="twoMot">Semana</div>
+                        <div className="two-twoMot">{hojeDiaSemana}</div>
+                      <div className="threeMot">Motorista</div>
+                        <div className="Three-twoMot">--</div>
+                      <div className="fourMot">Tel:</div>
+                        <div className="four-twoMot"></div>
+                </div>
                 <button href="#" className="info-link">Mais...</button>
               </div>
               <div className="section">
-                <h2>Dados Usuário</h2>
-                <p>Some Text goes here, some text goes here, some text goes here, some text goes here.</p>
+                <h2>Dados Usuários</h2>
+                <p>Matrícula dos Martes:</p>
+                <p>Matrícula dos Próprios:</p>
                 <button className="info-link" href="#" >Mais...</button>
               </div>
               <div className="section">
                 <h2 className="bigtitle-title">Avisos / Pendências</h2>
-                <p>Some Text goes here, some text goes here, some text goes here, some text goes here.</p>
+                <p>Sem Avisos e pendências</p>
                 <button href="#" className="info-link">Mais...</button>
               </div>
               <div className="section">
                 <h2>Outros</h2>
-                <p>Some Text goes here, some text goes here, some text goes here, some text goes here.</p>
+                <p>Não há outras informações </p>
                 <button href="#" className="info-link">Mais...</button>
               </div>
         </div>
