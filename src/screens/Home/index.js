@@ -31,6 +31,7 @@ const hojeUS = format(new Date(), 'yyyy-MM-dd',{locale:enUS});
 const semanaAtual = getWeek(new Date());
 const result = getDay(new Date(), 'dd/MM/yyyy',{locale:ptBR})
 let programOfTheDay = [];
+console.log(getSavedIdLocal(),'id', user_id, 'sem:',semanaAtual, 'dia sem',result)
 
 useEffect(() => {
   if (user_id){
@@ -77,7 +78,7 @@ useEffect(() => {
     }
     return null
   });
-console.log(programOfTheDay)
+console.log('programday',programOfTheDay, 'showuser', showUserProgram, 'username', user_name)
 
   return(
     <div className="background">
@@ -85,7 +86,7 @@ console.log(programOfTheDay)
       <div className="body">
         <header>
       <h1 className="title">{hoje} </h1>
-      <h2 className="subtitle">Semana:{semanaAtual}</h2>
+      <h2 className="subtitle">Semana: {semanaAtual}</h2>
         <div className="options">
           <button href="#" className="options-link">Programação</button>
           <h3>|</h3>
