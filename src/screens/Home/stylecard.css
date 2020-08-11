@@ -136,7 +136,11 @@
     margin-bottom: 20px;
     overflow: hidden;
   }
-  
+
+  .section-text{
+  padding: 10px;
+  }
+
   .section-img {
     display: block;
     padding: 10px;
@@ -183,6 +187,7 @@
     grid-template-columns: repeat(3, 1fr);
     /* grid-gap: 0.1em; */
     grid-auto-rows: minmax(auto, auto);
+    padding: 10px;
   }
   .one {
     grid-column: 1;
@@ -216,6 +221,7 @@
     /* grid-gap: 0.1em; */
     grid-row-gap: 0.2em;
     grid-auto-rows: minmax(auto, auto);
+    padding: 10px;
   }
   .oneMot {
     grid-column: 1;
