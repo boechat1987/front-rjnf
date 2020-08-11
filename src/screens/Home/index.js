@@ -69,8 +69,10 @@ useEffect(() => {
     if (hojeUS === showprog.data){
       const osId = showprog.osId;
       return <div key={osId}>
-      <div>Numero OS: {showprog.numero}</div>
-      <div>Descrição da ordem: {showprog.text}</div>
+        <ul>
+          <li>Número OS: {showprog.numero}</li>
+          <li>Descrição: {showprog.text}</li>
+        </ul>
       </div>;
     }
     return null
@@ -95,7 +97,7 @@ console.log(programOfTheDay)
         <div className="main">
               <div className="section">
                 <h2>Programação Do Dia</h2>
-                <div>{showUserProgram}</div>
+                {showUserProgram}
                 <button href="#" className="info-link">Mais...</button>
               </div>
               <div className="section">
