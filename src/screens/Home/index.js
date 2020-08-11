@@ -68,10 +68,10 @@ useEffect(() => {
   const showUserProgram = programOfTheDay.map((showprog) => {
     if (hojeUS === showprog.data){
       const osId = showprog.osId;
-      return <li key={osId}>
-      <ul><strong>Numero OS:</strong> {showprog.numero}</ul>
-      <ul><strong>Descrição da ordem:</strong> {showprog.text}</ul>
-      </li>;
+      return <div key={osId}>
+      <div>Numero OS: {showprog.numero}</div>
+      <div>Descrição da ordem: {showprog.text}</div>
+      </div>;
     }
     return null
   });
@@ -101,11 +101,11 @@ console.log(programOfTheDay)
               <div className="section">
                 <h2>Sobreaviso</h2>
                 <div className="wrapper">
-                      <div className="one">Dia</div>
+                      <div className="one">{hojeDiaSemana}</div>
                         <div className="one-two">{hojeBR}</div>
-                      <div className="two">Semana</div>
-                        <div className="two-two">{hojeDiaSemana}</div>
-                      <div className="three">Técnico</div>
+                      <div className="two">Área 1 e 2</div>
+                        <div className="two-two">--</div>
+                      <div className="three">Área 7</div>
                         <div className="Three-two">--</div>
                 </div>
                 {/* <Logo
@@ -132,7 +132,7 @@ console.log(programOfTheDay)
                         <div className="two-twoMot">{hojeDiaSemana}</div>
                       <div className="threeMot">Motorista</div>
                         <div className="Three-twoMot">--</div>
-                      <div className="fourMot">Tel:</div>
+                      <div className="fourMot">Tel: (21)--</div>
                         <div className="four-twoMot"></div>
                 </div>
                 <button href="#" className="info-link">Mais...</button>
