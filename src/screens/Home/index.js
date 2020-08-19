@@ -82,24 +82,33 @@ function handleClickList(name){
 //abre programação da semana
 const handleClose = () => setShow(false);
 const handleShow = () => setShow(true);
+let oldestProgDate = 0;
+
+try {//oldestprog que vai na principal
+  userOrdens.forEach (ListOrdensPeloDia => {
+    if (ListOrdensPeloDia.ordems.length !== 0){
+          for (let oldest of ListOrdensPeloDia.ordems){
+            if (oldestProgDate === 0){
+              oldestProgDate = oldest.created_at;
+            }
+            else if(isBefore((parseISO(oldestProgDate), 1), (parseISO(oldest.created_at), 1))){
+              oldestProgDate = oldest.created_at;
+            } 
+            console.log(oldestProgDate)
+          }
+        }
+      });
+    }catch (error) {
+      return console.log(error, "não tem prog")
+    };
 
   try {//programação do dia que vai na principal
   userOrdens.forEach (ListOrdensPeloDia => {
     if (ListOrdensPeloDia.ordems.length !== 0){
-        let oldestProgDate = 0;
-        for (let oldest of ListOrdensPeloDia.ordems){
-          if (oldestProgDate === 0){
-            oldestProgDate = oldest.created_at;
-          }
-          else if(isBefore((parseISO(oldestProgDate), 1), (parseISO(oldest.created_at), 1))){
-            oldestProgDate = oldest.created_at;
-          } 
-          console.log(oldestProgDate)
-        }
-
         for (let days of ListOrdensPeloDia.ordems){
           const data = ListOrdensPeloDia.data.split("T",1);
             if(oldestProgDate === days.created_at){
+              console.log("chegou aqui")
             programOfTheDay.push(
                       {
                           data: data[0],
