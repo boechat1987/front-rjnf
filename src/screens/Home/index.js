@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from "react"; 
 //import { Link } from "react-router-dom";
 /* import { ReactComponent as Logo } from "../../assets/logo.svg"; */
-import { getWeek ,format, getDay } from 'date-fns'
+import { getWeek ,format, getDay, isBefore, parseISO } from 'date-fns'
 import { ptBR, enUS } from 'date-fns/locale'
 import {Modal} from 'react-bootstrap';
 import {Button} from 'react-bootstrap';
@@ -86,19 +86,28 @@ const handleShow = () => setShow(true);
   try {//programação do dia que vai na principal
   userOrdens.forEach (ListOrdensPeloDia => {
     if (ListOrdensPeloDia.ordems.length !== 0){
+        let oldestProgDate = 0;
         for (let oldest of ListOrdensPeloDia.ordems){
-          console.log(oldest.created_at) 
+          if (oldestProgDate === 0){
+            oldestProgDate = oldest.created_at;
+          }
+          else if(isBefore((parseISO(oldestProgDate), 1), (parseISO(oldest.created_at), 1))){
+            oldestProgDate = oldest.created_at;
+          } 
+          console.log(oldestProgDate)
         }
+
         for (let days of ListOrdensPeloDia.ordems){
           const data = ListOrdensPeloDia.data.split("T",1);
-          programOfTheDay.push(
-                    {
-                        data: data[0],
-                        text: days.text,
-                        prog_id: days.programacao_id,
-                        numero: days.numero,
-                        osId: days.id
-                    })
+            if(oldestProgDate === days.created_at){
+            programOfTheDay.push(
+                      {
+                          data: data[0],
+                          text: days.text,
+                          prog_id: days.programacao_id,
+                          numero: days.numero,
+                          osId: days.id
+                      })}
          }
     }
   });
