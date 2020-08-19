@@ -5,6 +5,7 @@ import Signin from "./screens/Signin";
 import Program from "./screens/Program";
 import Register from "./screens/Register";
 import Drop from "./screens/Program/dropzone.js";
+import DropSobreaviso from "./screens/Drop/dropSobreaviso"
 import ProgramUsuario from "./screens/Program/ProgramUsuario";
 /* import Menu from "./screens/Bootstrap"; */
 import Transport from "./screens/Transport"; 
@@ -24,6 +25,9 @@ const App = () => {
             </Route>
             <Route path="/Drop" >
                 <Drop />
+            </Route>
+            <Route path="/DropSobreaviso" >
+                <DropSobreaviso />
             </Route>
             <Route path="/Signin" >
                 <Signin />

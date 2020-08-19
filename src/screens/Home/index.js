@@ -1,18 +1,18 @@
 import React, { useEffect, useState} from "react"; 
-/*import React, { useState, useEffect } from "react"; 
-import { Link } from "react-router-dom";
-import {isAuthenticated} from '../../helper/token';
-import { doGet } from "../../helper/ApiHelper"; */
+//import { Link } from "react-router-dom";
 /* import { ReactComponent as Logo } from "../../assets/logo.svg"; */
 import { getWeek ,format, getDay } from 'date-fns'
 import { ptBR, enUS } from 'date-fns/locale'
 import {Modal} from 'react-bootstrap';
 import {Button} from 'react-bootstrap';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import Dropdown from 'react-bootstrap/Dropdown';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import axios from 'axios';
 
 import {getSavedIdLocal, getSavedUserLocal} from '../../helper/token';
+//import {getSavedIdLocal} from '../../helper/token';
 
 import './stylecardreset.css';
 import './styles.css';
@@ -22,9 +22,12 @@ const API_BASE = process.env.REACT_APP_API_URL;
 
 const Home = () => {
 
-const user_id = getSavedIdLocal();
 const user_name = getSavedUserLocal();
+const user_id = getSavedIdLocal();
+const [viewProgUser, setViewProgUser] = useState(null);
+const [anotherUser, setAnotherUser] = useState(null);
 const [userOrdens, setUserOrdens] = useState([]);
+const [listUserToChange, setListUserToChange] = useState([]);
 const [show, setShow] = useState(false);
 
 const hoje = format(new Date(), 'eeee, dd/MM/yyyy',{locale:ptBR});
@@ -36,28 +39,51 @@ const result = getDay(new Date(), 'dd/MM/yyyy',{locale:ptBR})
 let programOfTheDay = [];
 console.log(getSavedIdLocal(),'id', user_id, 'sem:',semanaAtual, 'dia sem',result)
 
+if(!viewProgUser && user_id){
+  setViewProgUser(user_id);
+}
+
 useEffect(() => {
   if (user_id){
   axios.get(`${API_BASE}prog/ordem/busca/${semanaAtual}`, {params: {
-    user_id: user_id}
+    user_id: viewProgUser}
   })
   .then((ordensUsuarios) => {
     setUserOrdens(ordensUsuarios.data);
   }).catch((error) => {
   console.log(error, "error");
   })}       
-           
-}, [user_id, semanaAtual]);
 
+}, [user_id, viewProgUser, semanaAtual]);
+
+useEffect(() => {
+  axios.get(`${API_BASE}users`)
+  .then((ordensUsuarios) => {
+    setListUserToChange(ordensUsuarios.data);
+  }).catch((error) => {
+  console.log(error, "error");
+  })
+}, []);
+
+//scroll smooth
 function onLinkClick(id) {
   const elementId = id;
   document.getElementById(`${elementId}`).scrollIntoView({behavior: "smooth"});
 }
 
+function handleClickList(name){
+  for (let item of listUserToChange)
+    if (item.username === name){
+      setViewProgUser(item.id);
+      setAnotherUser(item.username);
+  }
+}
+
+//abre programação da semana
 const handleClose = () => setShow(false);
 const handleShow = () => setShow(true);
 
-  try {
+  try {//programação do dia que vai na principal
   userOrdens.forEach (ListOrdensPeloDia => {
     if (ListOrdensPeloDia.ordems.length !== 0){
         for (let days of ListOrdensPeloDia.ordems){
@@ -77,6 +103,7 @@ const handleShow = () => setShow(true);
     return console.log(error, "não tem prog")
   };
   
+  //como mostra a programação do dia
   const showUserProgram = programOfTheDay.map((showprog) => {
     if (hojeUS === showprog.data){
       const osId = showprog.osId;
@@ -90,9 +117,9 @@ const handleShow = () => setShow(true);
     return null
   });
 
+  //como mostra a programação completa
   const showUserProgramCompleta = programOfTheDay.map((showprog) => {
       const osId = showprog.osId;
-      console.log(showprog)
       return <div className="section-text" key={osId}>
         <ul>
           <li>Data: {showprog.data}</li>
@@ -102,7 +129,7 @@ const handleShow = () => setShow(true);
       </div>;
   });
 
-console.log('programday',programOfTheDay, 'showuser', showUserProgram, 'username', user_name, 'progCompleta', showUserProgramCompleta)
+/* console.log('programday',programOfTheDay, 'showuser', showUserProgram, 'username', user_name, 'progCompleta', showUserProgramCompleta) */
 
   return(
     <div className="background">
@@ -124,6 +151,35 @@ console.log('programday',programOfTheDay, 'showuser', showUserProgram, 'username
                 <h2>Programação de {hojeDiaSemana}</h2>
                 {showUserProgram.length ? showUserProgram : <div className="section-text">Não há programação cadastrada</div>}
                 <button href="#" className="info-link" onClick={handleShow} >Mais...</button>
+                 <div className="menu-style">
+                    <DropdownButton
+                      id={`dropdown-button-drop-up`}
+                      drop={'up'}
+                      variant="secondary"
+                      title={anotherUser ? anotherUser : user_name}
+                    >
+                      <Dropdown.Divider />
+                      <Dropdown.Item eventKey="1" onClick={() => handleClickList("Affonso")}>Affonso</Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item eventKey="2" onClick={() => handleClickList("Boechat")}>Boechat</Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item eventKey="3" onClick={() => handleClickList("Caio")}>Caio</Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item eventKey="4" onClick={() => handleClickList("Daniel")}>Daniel</Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item eventKey="5" onClick={() => handleClickList("Davi")}>Davi</Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item eventKey="6" onClick={() => handleClickList("Fábio Bertuzzi")}>Fábio Bertuzzi</Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item eventKey="7" onClick={() => handleClickList("Jorge")}>Jorge</Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item eventKey="8" onClick={() => handleClickList("José Rodrigo")}>José Rodrigo</Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item eventKey="9" onClick={() => handleClickList("Manhães")}>Manhães</Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item eventKey="10" onClick={() => handleClickList("Wallace")}>Wallace</Dropdown.Item>
+                    </DropdownButton>
+                </div>
               </div>
               <div id="sobreaviso" className="section">
                 <h2>Sobreaviso</h2>
@@ -185,43 +241,19 @@ console.log('programday',programOfTheDay, 'showuser', showUserProgram, 'username
         <Modal.Header closeButton>
           <Modal.Title>Programação da Semana</Modal.Title>
         </Modal.Header>
-        <Modal.Body>{showUserProgramCompleta}</Modal.Body>
+              <Modal.Body>{showUserProgramCompleta}</Modal.Body>
         <Modal.Footer>
+          {/* <Button variant="primary" onClick={()=> handleClickOnAnotherUser(document.getElementById('SeleçãoUsuario').value)}>
+            Alterar
+          </Button> */}
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          {/* <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button> */}
         </Modal.Footer>
       </Modal>
+
       </div> : <p className="await-login">Desenvolvido para navegador Chrome</p>}
   </div>)
-  /* const [users, setUsers] = useState([]);
-  
-  useEffect(() => {
-    doGet("users").then((response) => setUsers(response));
-  }, []);
-
-  if (!users || !users.length) {
-    return <h1>Loading...</h1>;
-  }
-
-  const usersList = users.map((p) => {
-    const id = p.id;
-    return <li key={id}><Link to={`/Program/${id}`}>{p.username}</Link></li>;
-
-  });
-
-  return (
-    <div className="menu-names">
-      {isAuthenticated ? (  <>
-      <h1>Usuários</h1>
-      <ul className="list-names" >
-        {usersList}
-      </ul></>) : (<h1>aaa</h1>)}
-    </div>
-  ); */
 };
 
 export default Home;

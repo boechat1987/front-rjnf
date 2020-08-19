@@ -258,3 +258,14 @@
     grid-column: 2;
     grid-row: 3;
   }
+
+  .dropdown-menu {
+    max-height: 150px;
+    overflow-y: scroll;
+}
+
+ .menu-style{
+  color: var(--green);
+  padding: 10px;
+  background-color: white;
+ }
