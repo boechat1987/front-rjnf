@@ -86,6 +86,9 @@ const handleShow = () => setShow(true);
   try {//programação do dia que vai na principal
   userOrdens.forEach (ListOrdensPeloDia => {
     if (ListOrdensPeloDia.ordems.length !== 0){
+        for (let oldest of ListOrdensPeloDia.ordems){
+          console.log(oldest.created_at) 
+        }
         for (let days of ListOrdensPeloDia.ordems){
           const data = ListOrdensPeloDia.data.split("T",1);
           programOfTheDay.push(
