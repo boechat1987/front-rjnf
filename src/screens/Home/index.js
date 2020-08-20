@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from "react"; 
 //import { Link } from "react-router-dom";
 /* import { ReactComponent as Logo } from "../../assets/logo.svg"; */
-import { getWeek ,format, getDay, isBefore, parseISO } from 'date-fns'
+import { getWeek ,format, getDay, isBefore, parseISO, isWithinInterval, subMinutes, addMinutes } from 'date-fns'
 import { ptBR, enUS } from 'date-fns/locale'
 import {Modal} from 'react-bootstrap';
 import {Button} from 'react-bootstrap';
@@ -83,6 +83,8 @@ function handleClickList(name){
 const handleClose = () => setShow(false);
 const handleShow = () => setShow(true);
 let oldestProgDate = 0;
+let oldestProgDateMaisUm = 0;
+let oldestProgDateMenosUm = 0;
 
 try {//oldestprog que vai na principal
   userOrdens.forEach (ListOrdensPeloDia => {
@@ -91,12 +93,12 @@ try {//oldestprog que vai na principal
             if (oldestProgDate === 0){
               oldestProgDate = oldest.created_at;
             }
-            else if(isBefore((parseISO(oldestProgDate), 1), (parseISO(oldest.created_at), 1))){
+            else if(isBefore((parseISO(oldestProgDate)), (parseISO(oldest.created_at)))){
               oldestProgDate = oldest.created_at;
             } 
             console.log(oldestProgDate)
           }
-        }
+        } 
       });
     }catch (error) {
       return console.log(error, "não tem prog")
@@ -107,8 +109,10 @@ try {//oldestprog que vai na principal
     if (ListOrdensPeloDia.ordems.length !== 0){
         for (let days of ListOrdensPeloDia.ordems){
           const data = ListOrdensPeloDia.data.split("T",1);
-            if(oldestProgDate === days.created_at){
-              console.log("chegou aqui")
+          oldestProgDateMaisUm = addMinutes((parseISO(oldestProgDate)), 1)
+          oldestProgDateMenosUm = subMinutes((parseISO(oldestProgDate)), 1)  
+            if(isWithinInterval((parseISO(days.created_at)), { start: oldestProgDateMenosUm, end: oldestProgDateMaisUm})){
+            console.log("chegou aqui")
             programOfTheDay.push(
                       {
                           data: data[0],
