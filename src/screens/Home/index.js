@@ -119,7 +119,8 @@ try {//oldestprog que vai na principal
                           text: days.text,
                           prog_id: days.programacao_id,
                           numero: days.numero,
-                          osId: days.id
+                          osId: days.id,
+                          numero_extra: days.numero_extra
                       })}
          }
     }
@@ -134,7 +135,7 @@ try {//oldestprog que vai na principal
       const osId = showprog.osId;
       return <div className="section-text" key={osId}>
         <ul >
-          <li>Número OS: {showprog.numero}</li>
+          {showprog.numero_extra ? <li>Número OS: {showprog.numero} / {showprog.numero_extra}</li> : <li>Número OS: {showprog.numero}</li>}
           <li>Descrição: {showprog.text}</li>
         </ul>
       </div>;
@@ -145,10 +146,13 @@ try {//oldestprog que vai na principal
   //como mostra a programação completa
   const showUserProgramCompleta = programOfTheDay.map((showprog) => {
       const osId = showprog.osId;
+      if (showprog.numero_extra){
+        //tem que dividir o numero extra a cada 8 caracteres dependendo de quantas OS´s tem
+      }
       return <div className="section-text" key={osId}>
         <ul>
           <li>Data: {showprog.data}</li>
-          <li>Número OS: {showprog.numero}</li>
+          {showprog.numero_extra ? <li>Número OS: {showprog.numero} / {showprog.numero_extra}</li> : <li>Número OS: {showprog.numero}</li>}
           <li>Descrição: {showprog.text}</li>
         </ul>
       </div>;
