@@ -29,6 +29,7 @@ const [anotherUser, setAnotherUser] = useState(null);
 const [userOrdens, setUserOrdens] = useState([]);
 const [listUserToChange, setListUserToChange] = useState([]);
 const [show, setShow] = useState(false);
+const [show2, setShow2] = useState(false);
 
 const hoje = format(new Date(), 'eeee, dd/MM/yyyy',{locale:ptBR});
 const hojeBR = format(new Date(), 'dd/MM',{locale:ptBR});
@@ -82,6 +83,9 @@ function handleClickList(name){
 //abre programação da semana
 const handleClose = () => setShow(false);
 const handleShow = () => setShow(true);
+const handleClose2 = () => setShow2(false);
+const handleShow2 = () => setShow2(true);
+
 let oldestProgDate = 0;
 let oldestProgDateMaisUm = 0;
 let oldestProgDateMenosUm = 0;
@@ -250,10 +254,19 @@ try {//oldestprog que vai na principal
                 <button href="#" className="info-link">Mais...</button>
               </div>
               <div id="matriculas" className="section">
-                <h2>Dados Usuários</h2>
-                <p>Matrícula dos Martes:</p>
-                <p>Matrícula dos Próprios:</p>
-                <button className="info-link" href="#" >Mais...</button>
+                <h2>Info. Importantes</h2>
+                  <div ClassName="divisao-matriculas-marte">
+                  <p>Matrícula dos Martes:</p>
+                  <ul>
+                    <li>Ronaldo: </li>
+                    <li>Jeanilson: 49728872</li>
+                    <li>Wescley: 41037730</li>
+                    <li>Sérgio Braz: 70004502</li>
+                    <li>Jorge Bento: 49727525</li>
+                    <li>Cid: </li>
+                  </ul>
+                  </div>
+                <button className="info-link" href="#" onClick={handleShow2}>Mais...</button>
               </div>
               <div id="pendencias" className="section">
                 <h2 className="bigtitle-title">Avisos / Pendências</h2>
@@ -266,9 +279,38 @@ try {//oldestprog que vai na principal
                 <button href="#" className="info-link">Mais...</button>
               </div>
         </div>
-        <Modal show={show} onHide={handleClose}>
+        <Modal show={show2} onHide={handleClose2}>
         <Modal.Header closeButton>
           <Modal.Title>Programação da Semana</Modal.Title>
+        </Modal.Header>
+              <Modal.Body><div className="divisao-matriculas-proprio">
+                  <p>Matrícula dos Próprios:</p>
+                  <ul>
+                    <li>Affonso: 2475</li>
+                    <li>Boechat: 7420</li>
+                    <li>Caio: 3859</li>
+                    <li>Daniel: 4925</li>
+                    <li>Davi: 3905</li>
+                    <li>Bertuzzi: 5026</li>
+                    <li>José Rodrigo: 5180</li>
+                    <li>Jorge: 5825</li>
+                    <li>Manhães: 5711</li>
+                    <li>Wallace: 6747</li>
+                  </ul>
+                  </div></Modal.Body>
+        <Modal.Footer>
+          {/* <Button variant="primary" onClick={()=> handleClickOnAnotherUser(document.getElementById('SeleçãoUsuario').value)}>
+            Alterar
+          </Button> */}
+          <Button variant="secondary" onClick={handleClose2}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+        {/* modal mais info. importantes */}
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Info. Importantes</Modal.Title>
         </Modal.Header>
               <Modal.Body>{showUserProgramCompleta}</Modal.Body>
         <Modal.Footer>
