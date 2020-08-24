@@ -27,17 +27,20 @@ const user_id = getSavedIdLocal();
 const [viewProgUser, setViewProgUser] = useState(null);
 const [anotherUser, setAnotherUser] = useState(null);
 const [userOrdens, setUserOrdens] = useState([]);
+const [userSobreaviso, setUserSobreaviso] = useState([]);
 const [listUserToChange, setListUserToChange] = useState([]);
 const [show, setShow] = useState(false);
 const [show2, setShow2] = useState(false);
 
 const hoje = format(new Date(), 'eeee, dd/MM/yyyy',{locale:ptBR});
-const hojeBR = format(new Date(), 'dd/MM',{locale:ptBR});
+const hojeBR = format(new Date(), 'dd/MM/yyyy',{locale:ptBR});
+const hojeBRshort = format(new Date(), 'dd/MM',{locale:ptBR});
 const hojeDiaSemana = format(new Date(), 'eeee',{locale:ptBR});
 const hojeUS = format(new Date(), 'yyyy-MM-dd',{locale:enUS});
 const semanaAtual = getWeek(new Date());
 const result = getDay(new Date(), 'dd/MM/yyyy',{locale:ptBR})
 let programOfTheDay = [];
+
 console.log(getSavedIdLocal(),'id', user_id, 'sem:',semanaAtual, 'dia sem',result)
 
 if(!viewProgUser && user_id){
@@ -65,6 +68,17 @@ useEffect(() => {
   console.log(error, "error");
   })
 }, []);
+
+useEffect(() => {
+  axios.get(`${API_BASE}prog/sobreaviso/busca/data`, {params: {
+    date: hojeBR}
+  })
+  .then((ordensUsuarios) => {
+    setUserSobreaviso(ordensUsuarios.data);
+  }).catch((error) => {
+  console.log(error, "error");
+  })
+}, [hojeBR]);
 
 //scroll smooth
 function onLinkClick(id) {
@@ -161,7 +175,16 @@ try {//oldestprog que vai na principal
         </ul>
       </div>;
   });
-
+ 
+  const areaUm = userSobreaviso.map((showSobreavisoAreaUm) =>{
+    return showSobreavisoAreaUm.tecAreaUm
+  })
+  
+  const areaSete = userSobreaviso.map((showSobreavisoAreaSete) =>{
+    return showSobreavisoAreaSete.tecAreaSete
+  })
+  
+console.log(areaUm, areaSete)
 /* console.log('programday',programOfTheDay, 'showuser', showUserProgram, 'username', user_name, 'progCompleta', showUserProgramCompleta) */
 
   return(
@@ -218,11 +241,11 @@ try {//oldestprog que vai na principal
                 <h2>Sobreaviso</h2>
                 <div className="wrapper">
                       <div className="one">{hojeDiaSemana}</div>
-                        <div className="one-two">{hojeBR}</div>
+                        <div className="one-two">{hojeBRshort}</div>
                       <div className="two">Área 1 e 2</div>
-                        <div className="two-two">--</div>
+                        <div className="two-two">{userSobreaviso.length ? <div>{areaUm}</div>: "--"}</div>
                       <div className="three">Área 7</div>
-                        <div className="Three-two">--</div>
+                        <div className="Three-two">{userSobreaviso.length ? <div>{areaSete}</div>: "--"}</div>
                 </div>
                 {/* <Logo
                   alt=""
@@ -243,7 +266,7 @@ try {//oldestprog que vai na principal
                 /> */}
                 <div className="wrapperMot">
                       <div className="oneMot">Dia</div>
-                        <div className="one-twoMot">{hojeBR}</div>
+                        <div className="one-twoMot">{hojeBRshort}</div>
                       <div className="twoMot">Semana</div>
                         <div className="two-twoMot">{hojeDiaSemana}</div>
                       <div className="threeMot">Motorista</div>
@@ -255,15 +278,15 @@ try {//oldestprog que vai na principal
               </div>
               <div id="matriculas" className="section">
                 <h2>Info. Importantes</h2>
-                  <div ClassName="divisao-matriculas-marte">
+                  <div className="divisao-matriculas-marte">
                   <p>Matrícula dos Martes:</p>
                   <ul>
-                    <li>Ronaldo: </li>
+                    <li>Ronaldo: 49728663</li>
                     <li>Jeanilson: 49728872</li>
                     <li>Wescley: 41037730</li>
                     <li>Sérgio Braz: 70004502</li>
                     <li>Jorge Bento: 49727525</li>
-                    <li>Cid: </li>
+                    <li>Cid: 70795725</li>
                   </ul>
                   </div>
                 <button className="info-link" href="#" onClick={handleShow2}>Mais...</button>
@@ -279,9 +302,10 @@ try {//oldestprog que vai na principal
                 <button href="#" className="info-link">Mais...</button>
               </div>
         </div>
+        {/* modal mais info. importantes */}
         <Modal show={show2} onHide={handleClose2}>
         <Modal.Header closeButton>
-          <Modal.Title>Programação da Semana</Modal.Title>
+          <Modal.Title>Info. Importantes</Modal.Title>
         </Modal.Header>
               <Modal.Body><div className="divisao-matriculas-proprio">
                   <p>Matrícula dos Próprios:</p>
@@ -307,10 +331,9 @@ try {//oldestprog que vai na principal
           </Button>
         </Modal.Footer>
       </Modal>
-        {/* modal mais info. importantes */}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Info. Importantes</Modal.Title>
+          <Modal.Title>Programação da Semana</Modal.Title>
         </Modal.Header>
               <Modal.Body>{showUserProgramCompleta}</Modal.Body>
         <Modal.Footer>
