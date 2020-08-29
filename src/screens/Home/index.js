@@ -164,39 +164,35 @@ try {//oldestprog que vai na principal
     }
     return null
   });
-
+  //array para ficar somente um transporte
+  let isTodayTransport = [];
   const showUserProgramTransport = programOfTheDay.map((showprog) => {
     if (hojeUS === showprog.data){
-      return showprog.transporte;
+      isTodayTransport.push(showprog.transporte)
+      return showprog.transporte
     }
-    return null
+    else {
+      return null
+    };
   });
   
+  const first =  function(array, n) {
+    if (array == null) 
+    return void 0;
+  if (n == null) 
+    return array[0];
+  if (n < 0)
+    return [];
+  return array.slice(0, n);
+};
+console.log(first(isTodayTransport))
+/* console.log(showUserProgram); */
   let sunday = null; let monday = null; let tuesday = null; 
   let wednesday = null; let thusday = null; let friday = null; let saturday = null; 
 
 /* //como mostra a programação completa
   const showUserProgramCompleta = programOfTheDay.map((showprog) => {
-      const osId = showprog.osId;
-      if (showprog.numero_extra){
-        //tem que dividir o numero extra a cada 8 caracteres dependendo de quantas OS´s tem
-      }
-      //preencher a prog com o dia somente uma vez
-      if (isSunday((parseISO(showprog.data)))){
-        sunday = showprog.data;
-      }else if (isMonday((parseISO(showprog.data)))){
-        monday = showprog.data;
-      }else if (isTuesday((parseISO(showprog.data)))){
-        tuesday = showprog.data;
-      }else if (isWednesday((parseISO(showprog.data)))){
-        wednesday = showprog.data;
-      }else if (isThursday((parseISO(showprog.data)))){
-        thusday = showprog.data;
-      }else if (isFriday((parseISO(showprog.data)))){
-        friday = showprog.data;
-      }else if (isSaturday((parseISO(showprog.data)))){
-        saturday = showprog.data;
-      }
+      const osId = showprog.osId; 
       return <div className="section-text" key={osId}>
          <ul>
           {showprog.local !== "0" ? <li>Local: {showprog.local}</li> : <li>Local: </li>}
@@ -210,6 +206,10 @@ try {//oldestprog que vai na principal
 
   // programação do dia retirando as datas repetidas
   const showUserProgramDailySunday = programOfTheDay.map((showprog) => {
+    //if (showprog.numero_extra){
+      //tem que dividir o numero extra a cada 8 caracteres dependendo de quantas OS´s tem
+   // }
+
     if (isSunday((parseISO(showprog.data)))){
       sunday = showprog.data;
     }else if (isMonday((parseISO(showprog.data)))){
@@ -442,7 +442,7 @@ console.log(areaUm, areaSete)
                       <div className="twoMot">Semana</div>
                         <div className="two-twoMot">{hojeDiaSemana}</div>
                       <div className="threeMot">Motorista</div>
-                        <div className="Three-twoMot">{showUserProgramTransport.length ? <div>{showUserProgramTransport}</div>: "--"}</div>
+                        <div className="Three-twoMot">{showUserProgramTransport.length ? <div>{first(isTodayTransport)}</div>: "--"}</div>
                       <div className="fourMot">Tel: (21) --</div>
                         <div className="four-twoMot"></div>
                 </div>
@@ -487,7 +487,7 @@ console.log(areaUm, areaSete)
                     <li>Caio: 3859</li>
                     <li>Daniel: 4925</li>
                     <li>Davi: 3905</li>
-                    <li>Bertuzzi: 5026</li>
+                    <li>Fábio Bertuzzi: 5026</li>
                     <li>José Rodrigo: 5180</li>
                     <li>Jorge: 5825</li>
                     <li>Manhães: 5711</li>
