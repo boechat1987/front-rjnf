@@ -185,7 +185,7 @@ try {//oldestprog que vai na principal
     return [];
   return array.slice(0, n);
 };
-console.log(first(isTodayTransport))
+
 /* console.log(showUserProgram); */
   let sunday = null; let monday = null; let tuesday = null; 
   let wednesday = null; let thusday = null; let friday = null; let saturday = null; 

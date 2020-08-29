@@ -166,7 +166,7 @@ function loginReducer(state, action) {
               <p>ACESSO</p>
               <input
                 type='text'
-                placeholder='Usuário'
+                placeholder='Chave ou Usuário'
                 value={username}
                 onChange={(e) =>
                   dispatch({
