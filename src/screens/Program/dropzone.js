@@ -44,6 +44,7 @@ const Uploader  = props => {
         const newFiles = files.filter(item => item.name !== fileName);
         setFiles(newFiles);
         }).catch((error) => {
+            console.log(files.filter(item => item.name !== fileName))
             console.log(error)
         console.log("error");
         });

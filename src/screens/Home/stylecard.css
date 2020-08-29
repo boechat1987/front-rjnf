@@ -277,3 +277,10 @@
 .divisao-matriculas-proprio{
   padding-top: 10px;
 }
+
+.section-daily{
+  padding: 10px;
+  text-align: center;
+  border: 0.1em solid;
+  border-radius: 0.5em;
+  }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState} from "react"; 
 //import { Link } from "react-router-dom";
 /* import { ReactComponent as Logo } from "../../assets/logo.svg"; */
-import { getWeek ,format, getDay, isBefore, parseISO, isWithinInterval, subMinutes, addMinutes } from 'date-fns'
+import { getWeek ,format, getDay, isBefore, parseISO, isWithinInterval, subMinutes, addMinutes, isMonday, isSunday, isTuesday, isWednesday, isThursday, isFriday, isSaturday } from 'date-fns'
 import { ptBR, enUS } from 'date-fns/locale'
 import {Modal} from 'react-bootstrap';
 import {Button} from 'react-bootstrap';
@@ -130,7 +130,6 @@ try {//oldestprog que vai na principal
           oldestProgDateMaisUm = addMinutes((parseISO(oldestProgDate)), 1)
           oldestProgDateMenosUm = subMinutes((parseISO(oldestProgDate)), 1)  
             if(isWithinInterval((parseISO(days.created_at)), { start: oldestProgDateMenosUm, end: oldestProgDateMaisUm})){
-            console.log("chegou aqui")
             programOfTheDay.push(
                       {
                           data: data[0],
@@ -138,7 +137,10 @@ try {//oldestprog que vai na principal
                           prog_id: days.programacao_id,
                           numero: days.numero,
                           osId: days.id,
-                          numero_extra: days.numero_extra
+                          numero_extra: days.numero_extra,
+                          apoio: ListOrdensPeloDia.apoio,
+                          local: ListOrdensPeloDia.local,
+                          transporte: ListOrdensPeloDia.transporte
                       })}
          }
     }
@@ -153,29 +155,199 @@ try {//oldestprog que vai na principal
       const osId = showprog.osId;
       return <div className="section-text" key={osId}>
         <ul >
+          {showprog.local !== "0" ? <li>Local: {showprog.local}</li> : <li>Local: </li>}
           {showprog.numero_extra ? <li>Número OS: {showprog.numero} / {showprog.numero_extra}</li> : <li>Número OS: {showprog.numero}</li>}
           <li>Descrição: {showprog.text}</li>
+          {showprog.apoio !== "0" ? <li>Apoio: {showprog.apoio}</li> : <li>Apoio: </li>}
         </ul>
       </div>;
     }
     return null
   });
 
-  //como mostra a programação completa
+  const showUserProgramTransport = programOfTheDay.map((showprog) => {
+    if (hojeUS === showprog.data){
+      return showprog.transporte;
+    }
+    return null
+  });
+  
+  let sunday = null; let monday = null; let tuesday = null; 
+  let wednesday = null; let thusday = null; let friday = null; let saturday = null; 
+
+/* //como mostra a programação completa
   const showUserProgramCompleta = programOfTheDay.map((showprog) => {
       const osId = showprog.osId;
       if (showprog.numero_extra){
         //tem que dividir o numero extra a cada 8 caracteres dependendo de quantas OS´s tem
       }
+      //preencher a prog com o dia somente uma vez
+      if (isSunday((parseISO(showprog.data)))){
+        sunday = showprog.data;
+      }else if (isMonday((parseISO(showprog.data)))){
+        monday = showprog.data;
+      }else if (isTuesday((parseISO(showprog.data)))){
+        tuesday = showprog.data;
+      }else if (isWednesday((parseISO(showprog.data)))){
+        wednesday = showprog.data;
+      }else if (isThursday((parseISO(showprog.data)))){
+        thusday = showprog.data;
+      }else if (isFriday((parseISO(showprog.data)))){
+        friday = showprog.data;
+      }else if (isSaturday((parseISO(showprog.data)))){
+        saturday = showprog.data;
+      }
       return <div className="section-text" key={osId}>
-        <ul>
-          <li>Data: {showprog.data}</li>
+         <ul>
+          {showprog.local !== "0" ? <li>Local: {showprog.local}</li> : <li>Local: </li>}
           {showprog.numero_extra ? <li>Número OS: {showprog.numero} / {showprog.numero_extra}</li> : <li>Número OS: {showprog.numero}</li>}
           <li>Descrição: {showprog.text}</li>
+          {showprog.apoio !== "0" ? <li>Apoio: {showprog.apoio}</li> : <li>Apoio: </li>}
+          {showprog.transporte !== "0" ? <li>Transporte: {showprog.transporte}</li> : <li>Transporte: </li>}
+        </ul> 
+      </div>;
+  }); */
+
+  // programação do dia retirando as datas repetidas
+  const showUserProgramDailySunday = programOfTheDay.map((showprog) => {
+    if (isSunday((parseISO(showprog.data)))){
+      sunday = showprog.data;
+    }else if (isMonday((parseISO(showprog.data)))){
+      monday = showprog.data;
+    }else if (isTuesday((parseISO(showprog.data)))){
+      tuesday = showprog.data;
+    }else if (isWednesday((parseISO(showprog.data)))){
+      wednesday = showprog.data;
+    }else if (isThursday((parseISO(showprog.data)))){
+      thusday = showprog.data;
+    }else if (isFriday((parseISO(showprog.data)))){
+      friday = showprog.data;
+    }else if (isSaturday((parseISO(showprog.data)))){
+      saturday = showprog.data;
+    }
+    if (sunday === showprog.data){
+      const osId = showprog.osId;
+      return <div className="section-text" key={osId}>
+        <ul >
+          {showprog.local !== "0" ? <li>Local: {showprog.local}</li> : <li>Local: </li>}
+          {showprog.numero_extra ? <li>Número OS: {showprog.numero} / {showprog.numero_extra}</li> : <li>Número OS: {showprog.numero}</li>}
+          <li>Descrição: {showprog.text}</li>
+          {showprog.apoio !== "0" ? <li>Apoio: {showprog.apoio}</li> : <li>Apoio: </li>}
+          {showprog.transporte !== "0" ? <li>Transporte: {showprog.transporte}</li> : <li>Transporte: </li>}
         </ul>
       </div>;
+    }
+    return null
   });
- 
+
+  // programação do dia retirando as datas repetidas
+  const showUserProgramDailyMonday = programOfTheDay.map((showprog) => {
+    
+    if (monday === showprog.data){
+      const osId = showprog.osId;
+      return <div className="section-text" key={osId}>
+        <ul >
+          {showprog.local !== "0" ? <li>Local: {showprog.local}</li> : <li>Local: </li>}
+          {showprog.numero_extra ? <li>Número OS: {showprog.numero} / {showprog.numero_extra}</li> : <li>Número OS: {showprog.numero}</li>}
+          <li>Descrição: {showprog.text}</li>
+          {showprog.apoio !== "0" ? <li>Apoio: {showprog.apoio}</li> : <li>Apoio: </li>}
+          {showprog.transporte !== "0" ? <li>Transporte: {showprog.transporte}</li> : <li>Transporte: </li>}
+        </ul>
+      </div>;
+    }
+    return null
+  });
+
+  // programação do dia retirando as datas repetidas
+  const showUserProgramDailyTuesday = programOfTheDay.map((showprog) => {
+    
+    if (tuesday === showprog.data){
+      const osId = showprog.osId;
+      return <div className="section-text" key={osId}>
+        <ul >
+          {showprog.local !== "0" ? <li>Local: {showprog.local}</li> : <li>Local: </li>}
+          {showprog.numero_extra ? <li>Número OS: {showprog.numero} / {showprog.numero_extra}</li> : <li>Número OS: {showprog.numero}</li>}
+          <li>Descrição: {showprog.text}</li>
+          {showprog.apoio !== "0" ? <li>Apoio: {showprog.apoio}</li> : <li>Apoio: </li>}
+          {showprog.transporte !== "0" ? <li>Transporte: {showprog.transporte}</li> : <li>Transporte: </li>}
+        </ul>
+      </div>;
+    }
+    return null
+  });
+
+  // programação do dia retirando as datas repetidas
+  const showUserProgramDailyWednesday = programOfTheDay.map((showprog) => {
+    
+    if (wednesday === showprog.data){
+      const osId = showprog.osId;
+      return <div className="section-text" key={osId}>
+        <ul >
+          {showprog.local !== "0" ? <li>Local: {showprog.local}</li> : <li>Local: </li>}
+          {showprog.numero_extra ? <li>Número OS: {showprog.numero} / {showprog.numero_extra}</li> : <li>Número OS: {showprog.numero}</li>}
+          <li>Descrição: {showprog.text}</li>
+          {showprog.apoio !== "0" ? <li>Apoio: {showprog.apoio}</li> : <li>Apoio: </li>}
+          {showprog.transporte !== "0" ? <li>Transporte: {showprog.transporte}</li> : <li>Transporte: </li>}
+        </ul>
+      </div>;
+    }
+    return null
+  });
+
+  // programação do dia retirando as datas repetidas
+  const showUserProgramDailyThusday = programOfTheDay.map((showprog) => {
+    
+    if (thusday === showprog.data){
+      const osId = showprog.osId;
+      return <div className="section-text" key={osId}>
+        <ul >
+          {showprog.local !== "0" ? <li>Local: {showprog.local}</li> : <li>Local: </li>}
+          {showprog.numero_extra ? <li>Número OS: {showprog.numero} / {showprog.numero_extra}</li> : <li>Número OS: {showprog.numero}</li>}
+          <li>Descrição: {showprog.text}</li>
+          {showprog.apoio !== "0" ? <li>Apoio: {showprog.apoio}</li> : <li>Apoio: </li>}
+          {showprog.transporte !== "0" ? <li>Transporte: {showprog.transporte}</li> : <li>Transporte: </li>}
+        </ul>
+      </div>;
+    }
+    return null
+  });
+
+  // programação do dia retirando as datas repetidas
+  const showUserProgramDailyFriday = programOfTheDay.map((showprog) => {
+    
+    if (friday === showprog.data){
+      const osId = showprog.osId;
+      return <div className="section-text" key={osId}>
+        <ul >
+          {showprog.local !== "0" ? <li>Local: {showprog.local}</li> : <li>Local: </li>}
+          {showprog.numero_extra ? <li>Número OS: {showprog.numero} / {showprog.numero_extra}</li> : <li>Número OS: {showprog.numero}</li>}
+          <li>Descrição: {showprog.text}</li>
+          {showprog.apoio !== "0" ? <li>Apoio: {showprog.apoio}</li> : <li>Apoio: </li>}
+          {showprog.transporte !== "0" ? <li>Transporte: {showprog.transporte}</li> : <li>Transporte: </li>}
+        </ul>
+      </div>;
+    }
+    return null
+  });
+
+  // programação do dia retirando as datas repetidas
+  const showUserProgramDailySaturday = programOfTheDay.map((showprog) => {
+    
+    if (saturday === showprog.data){
+      const osId = showprog.osId;
+      return <div className="section-text" key={osId}>
+        <ul >
+          {showprog.local !== "0" ? <li>Local: {showprog.local}</li> : <li>Local: </li>}
+          {showprog.numero_extra ? <li>Número OS: {showprog.numero} / {showprog.numero_extra}</li> : <li>Número OS: {showprog.numero}</li>}
+          <li>Descrição: {showprog.text}</li>
+          {showprog.apoio !== "0" ? <li>Apoio: {showprog.apoio}</li> : <li>Apoio: </li>}
+          {showprog.transporte !== "0" ? <li>Transporte: {showprog.transporte}</li> : <li>Transporte: </li>}
+        </ul>
+      </div>;
+    }
+    return null
+  });
+
   const areaUm = userSobreaviso.map((showSobreavisoAreaUm) =>{
     return showSobreavisoAreaUm.tecAreaUm
   })
@@ -270,7 +442,7 @@ console.log(areaUm, areaSete)
                       <div className="twoMot">Semana</div>
                         <div className="two-twoMot">{hojeDiaSemana}</div>
                       <div className="threeMot">Motorista</div>
-                        <div className="Three-twoMot">--</div>
+                        <div className="Three-twoMot">{showUserProgramTransport.length ? <div>{showUserProgramTransport}</div>: "--"}</div>
                       <div className="fourMot">Tel: (21) --</div>
                         <div className="four-twoMot"></div>
                 </div>
@@ -335,7 +507,28 @@ console.log(areaUm, areaSete)
         <Modal.Header closeButton>
           <Modal.Title>Programação da Semana</Modal.Title>
         </Modal.Header>
-              <Modal.Body>{showUserProgramCompleta}</Modal.Body>
+              <Modal.Body>
+              <div className="section-daily">Segunda-feira<br></br>{monday !== null ? monday : "segunda-feira"}</div>
+              {showUserProgramDailyMonday}
+              <hr></hr>
+              <div className="section-daily">Terça-feira<br></br>{tuesday !== null ? tuesday : "terça-feira"}</div>
+              {showUserProgramDailyTuesday}
+              <hr></hr>
+              <div className="section-daily">Quarta-feira<br></br>{wednesday !== null ? wednesday : ""}</div>
+              {showUserProgramDailyWednesday}
+              <hr></hr>
+              <div className="section-daily">Quinta-feira<br></br>{thusday !== null ? thusday : ""}</div>
+              {showUserProgramDailyThusday}
+              <hr></hr>
+              <div className="section-daily">Sexta-feira<br></br> {friday !== null ? friday : ""}</div>
+              {showUserProgramDailyFriday}
+              <hr></hr>
+              <div className="section-daily">Sábado<br></br>{saturday !== null ? thusday : ""}</div>
+              {showUserProgramDailySaturday}
+              <hr></hr>
+              <div className="section-daily">Domingo<br></br>{sunday !== null ? thusday : ""}</div>
+              {showUserProgramDailySunday}
+              </Modal.Body>
         <Modal.Footer>
           {/* <Button variant="primary" onClick={()=> handleClickOnAnotherUser(document.getElementById('SeleçãoUsuario').value)}>
             Alterar
