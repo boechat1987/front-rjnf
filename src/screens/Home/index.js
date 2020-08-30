@@ -1,6 +1,6 @@
 import React, { useEffect, useState} from "react"; 
 //import { Link } from "react-router-dom";
-/* import { ReactComponent as Logo } from "../../assets/logo.svg"; */
+import logoCalendario from "../../assets/calendar.svg";
 import { getWeek ,format, getDay, isBefore, parseISO, isWithinInterval, subMinutes, addMinutes, isMonday, isSunday, isTuesday, isWednesday, isThursday, isFriday, isSaturday } from 'date-fns'
 import { ptBR, enUS } from 'date-fns/locale'
 import {Modal} from 'react-bootstrap';
@@ -8,6 +8,8 @@ import {Button} from 'react-bootstrap';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Calendar from 'react-calendar';
+
 
 import axios from 'axios';
 
@@ -17,6 +19,7 @@ import {getSavedIdLocal, getSavedUserLocal} from '../../helper/token';
 import './stylecardreset.css';
 import './styles.css';
 import './stylecard.css';
+import './Calendar.css';
 
 const API_BASE = process.env.REACT_APP_API_URL;
 
@@ -31,14 +34,17 @@ const [userSobreaviso, setUserSobreaviso] = useState([]);
 const [listUserToChange, setListUserToChange] = useState([]);
 const [show, setShow] = useState(false);
 const [show2, setShow2] = useState(false);
+const [value, onChange] = useState(new Date());
+const [showCalendar, setShowCalendar] = useState(false);
 
-const hoje = format(new Date(), 'eeee, dd/MM/yyyy',{locale:ptBR});
-const hojeBR = format(new Date(), 'dd/MM/yyyy',{locale:ptBR});
-const hojeBRshort = format(new Date(), 'dd/MM',{locale:ptBR});
-const hojeDiaSemana = format(new Date(), 'eeee',{locale:ptBR});
-const hojeUS = format(new Date(), 'yyyy-MM-dd',{locale:enUS});
-const semanaAtual = getWeek(new Date());
-const result = getDay(new Date(), 'dd/MM/yyyy',{locale:ptBR})
+//pega o value e passa para o formato date-fns
+const hoje = format(value, 'eeee, dd/MM/yyyy',{locale:ptBR});
+const hojeBR = format(value, 'dd/MM/yyyy',{locale:ptBR});
+const hojeBRshort = format(value, 'dd/MM',{locale:ptBR});
+const hojeDiaSemana = format(value, 'eeee',{locale:ptBR});
+const hojeUS = format(value, 'yyyy-MM-dd',{locale:enUS});
+const semanaAtual = getWeek(value);
+const result = getDay(value, 'dd/MM/yyyy',{locale:ptBR})
 let programOfTheDay = [];
 
 console.log(getSavedIdLocal(),'id', user_id, 'sem:',semanaAtual, 'dia sem',result)
@@ -80,6 +86,10 @@ useEffect(() => {
   })
 }, [hojeBR]);
 
+useEffect(() => {
+  setShowCalendar(false);
+}, [value]);
+
 //scroll smooth
 function onLinkClick(id) {
   const elementId = id;
@@ -99,6 +109,9 @@ const handleClose = () => setShow(false);
 const handleShow = () => setShow(true);
 const handleClose2 = () => setShow2(false);
 const handleShow2 = () => setShow2(true);
+const handleClickCalendar = ()=> setShowCalendar(!showCalendar);
+
+
 
 let oldestProgDate = 0;
 let oldestProgDateMaisUm = 0;
@@ -366,6 +379,17 @@ console.log(areaUm, areaSete)
         <header>
       <h1 className="title">{hoje} </h1>
       <h2 className="subtitle">Semana: {semanaAtual}</h2>
+      <div className="section-calendario">
+        <div>
+        <img className="section-img" src={logoCalendario} alt="calendario completo" onClick={()=>handleClickCalendar()}></img>
+        </div>
+        <div id="calendar">
+        {showCalendar ? <Calendar
+          onChange={onChange}
+          value={value}
+        /> : ""}
+        </div>
+    </div>
         <div className="options">
           <button href="#programacaoDoDia" onClick={()=> onLinkClick("programacaoDoDia")} className="options-link">Programação</button>
           <h3>|</h3>
@@ -508,10 +532,10 @@ console.log(areaUm, areaSete)
           <Modal.Title>Programação da Semana</Modal.Title>
         </Modal.Header>
               <Modal.Body>
-              <div className="section-daily">Segunda-feira<br></br>{monday !== null ? monday : "segunda-feira"}</div>
+              <div className="section-daily">Segunda-feira<br></br>{monday !== null ? monday : ""}</div>
               {showUserProgramDailyMonday}
               <hr></hr>
-              <div className="section-daily">Terça-feira<br></br>{tuesday !== null ? tuesday : "terça-feira"}</div>
+              <div className="section-daily">Terça-feira<br></br>{tuesday !== null ? tuesday : ""}</div>
               {showUserProgramDailyTuesday}
               <hr></hr>
               <div className="section-daily">Quarta-feira<br></br>{wednesday !== null ? wednesday : ""}</div>

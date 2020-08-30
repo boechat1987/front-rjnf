@@ -144,7 +144,10 @@
   .section-img {
     display: block;
     padding: 10px;
-    margin: 0 auto;
+    margin: 10px auto;
+    background-color: white;
+    border-radius: 0.5em;
+    cursor: pointer;
   }
   
   .bigtitle {
@@ -284,3 +287,21 @@
   border: 0.1em solid;
   border-radius: 0.5em;
   }
+
+  .section-calendario{
+    padding: 10px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    transition: max-height 500ms
+    }
+
+.hidden { 
+  /* max-height: 0;  */
+  overflow: hidden; 
+  transition: max-height 500ms;
+  }
+  
+.hidden.active {
+  max-height: 1000px;
+}
