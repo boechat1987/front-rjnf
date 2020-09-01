@@ -1,7 +1,8 @@
 import React, { useEffect, useState} from "react"; 
 //import { Link } from "react-router-dom";
 import logoCalendario from "../../assets/calendar.svg";
-import { getWeek ,format, getDay, isBefore, parseISO, isWithinInterval, subMinutes, addMinutes, isMonday, isSunday, isTuesday, isWednesday, isThursday, isFriday, isSaturday } from 'date-fns'
+/* import { getWeek ,format, getDay, isBefore, parseISO, isWithinInterval, subMinutes, addMinutes, isMonday, isSunday, isTuesday, isWednesday, isThursday, isFriday, isSaturday } from 'date-fns' */
+import { getWeek ,format, isBefore, parseISO, isWithinInterval, subMinutes, addMinutes, isMonday, isSunday, isTuesday, isWednesday, isThursday, isFriday, isSaturday } from 'date-fns'
 import { ptBR, enUS } from 'date-fns/locale'
 import {Modal} from 'react-bootstrap';
 import {Button} from 'react-bootstrap';
@@ -44,10 +45,10 @@ const hojeBRshort = format(value, 'dd/MM',{locale:ptBR});
 const hojeDiaSemana = format(value, 'eeee',{locale:ptBR});
 const hojeUS = format(value, 'yyyy-MM-dd',{locale:enUS});
 const semanaAtual = getWeek(value);
-const result = getDay(value, 'dd/MM/yyyy',{locale:ptBR})
+/* const result = getDay(value, 'dd/MM/yyyy',{locale:ptBR}) */
 let programOfTheDay = [];
 
-console.log(getSavedIdLocal(),'id', user_id, 'sem:',semanaAtual, 'dia sem',result)
+/* console.log(getSavedIdLocal(),'id', user_id, 'sem:',semanaAtual, 'dia sem',result) */
 
 if(!viewProgUser && user_id){
   setViewProgUser(user_id);
@@ -166,12 +167,13 @@ try {//oldestprog que vai na principal
   const showUserProgram = programOfTheDay.map((showprog) => {
     if (hojeUS === showprog.data){
       const osId = showprog.osId;
+      console.log(showprog.numero_extra, showprog.numero)
       return <div className="section-text" key={osId}>
         <ul >
-          {showprog.local !== "0" ? <li>Local: {showprog.local}</li> : <li>Local: </li>}
+          {showprog.local !== "0" ? <li>Local: {showprog.local}</li> : <li></li>}
           {showprog.numero_extra ? <li>Número OS: {showprog.numero} / {showprog.numero_extra}</li> : <li>Número OS: {showprog.numero}</li>}
           <li>Descrição: {showprog.text}</li>
-          {showprog.apoio !== "0" ? <li>Apoio: {showprog.apoio}</li> : <li>Apoio: </li>}
+          {showprog.apoio !== "0" ? <li>Apoio: {showprog.apoio}</li> : <li></li>}
         </ul>
       </div>;
     }
@@ -369,7 +371,7 @@ try {//oldestprog que vai na principal
     return showSobreavisoAreaSete.tecAreaSete
   })
   
-console.log(areaUm, areaSete)
+/* console.log(areaUm, areaSete) */
 /* console.log('programday',programOfTheDay, 'showuser', showUserProgram, 'username', user_name, 'progCompleta', showUserProgramCompleta) */
 
   return(
