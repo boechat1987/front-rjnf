@@ -140,8 +140,9 @@ useEffect(() => {
 }, [value]);
 
 useEffect(() => {
+  async function fetch(){
   if (viewProgUser){
-  axios.get(`${API_BASE}prog/dia/busca/${hojeUS}`, {params: {
+  await axios.get(`${API_BASE}prog/dia/busca/${hojeUS}`, {params: {
     user_id: viewProgUser}
   })
   .then((programacao) => {
@@ -150,9 +151,11 @@ useEffect(() => {
   }).catch((error) => {
   console.log(error, "error");
   })
-}
-}, [hojeUS,user_id, iw41Status, viewProgUser]);
+}}
+fetch()
+}, [hojeUS,user_id, iw41Status, viewProgUser, iw41]);
 
+console.log(programDoDia)
 /* console.log(viewProgUser) */
 /*console.log(user_id, hojeUS) */
 
@@ -568,7 +571,7 @@ try {//oldestprog que vai na principal
         <div className="main">
               <div id="programacaoDoDia" className="section">
                 <h2 className="click_h2" onClick={handleShow3}>Programação de {hojeDiaSemana}</h2>
-                <span className="select-iw41" onClick={handleShow4}>IW41 realizado?</span>{iw41 === true ? <GoThumbsup></GoThumbsup>: <GoThumbsdown></GoThumbsdown>}
+                <span className="select-iw41" onClick={handleShow4}>IW41 realizado?</span>{verificaApontamento(programDoDia) === "true" ? <GoThumbsup></GoThumbsup>:<GoThumbsdown></GoThumbsdown>}
                 {showUserProgram.length ? showUserProgram : <div className="section-text">Carregando...</div>}
                 <button href="#" className="info-link" onClick={handleShow} >Mais...</button>
                  <div className="menu-style">
