@@ -8,6 +8,7 @@ import {Modal} from 'react-bootstrap';
 import {Button} from 'react-bootstrap';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
+import Spinner from 'react-bootstrap/Spinner';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Calendar from 'react-calendar';
 import { GoThumbsup, GoThumbsdown } from "react-icons/go";
@@ -572,7 +573,7 @@ try {//oldestprog que vai na principal
               <div id="programacaoDoDia" className="section">
                 <h2 className="click_h2" onClick={handleShow3}>Programação de {hojeDiaSemana}</h2>
                 <span className="select-iw41" onClick={handleShow4}>IW41 realizado?</span>{verificaApontamento(programDoDia) === "true" ? <GoThumbsup></GoThumbsup>:<GoThumbsdown></GoThumbsdown>}
-                {showUserProgram.length ? showUserProgram : <div className="section-text">Carregando...</div>}
+                {showUserProgram.length ? showUserProgram : <div className="section-text"><Spinner animation="border" role="status"></Spinner> Carregando...</div>}
                 <button href="#" className="info-link" onClick={handleShow} >Mais...</button>
                  <div className="menu-style">
                     <DropdownButton
