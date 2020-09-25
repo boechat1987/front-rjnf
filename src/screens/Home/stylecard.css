@@ -79,7 +79,7 @@
     font-size: 1.5em;
     text-align: center;
     color: white;
-    margin-bottom: 10px
+    margin-bottom: 0px
   }
   
   .figure-img {
@@ -294,3 +294,27 @@
     display: flex;
     flex-direction: column;
     }
+
+.select-iw41{
+  border-radius: 5px;
+  border: 2px solid #0099FF;
+  font-size: 1em;
+  padding: 0.1em;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.click_h2{
+  cursor: pointer;
+}
+
+.section-daily-fullProg{
+  padding: 10px;
+  text-align: left;
+  margin-bottom: 0.5em;
+  }
+
+.section-daily-fullProg-li{
+  padding: 10px;
+  text-align: center;
+}  

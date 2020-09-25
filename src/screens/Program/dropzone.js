@@ -35,6 +35,12 @@ const Uploader  = props => {
     const [file, setFile] = useState(null);
     const [success, setSuccess] = useState(false);
     const [files, setFiles] = useState([]);
+    const [apontamentoOld, setApontamentoOld] = useState([]);
+    const [semana, setSemana] = useState('');
+    const [off_set, setOff_set] = useState('');
+    const [limit, setLimit] = useState('');
+
+    setTimeout(() => { console.log(apontamentoOld,"semana:", semana,"offset:", off_set,"limit:", limit); }, 3000);
 
     const handleClick = fileName => axios({
         url: `${API_BASE}prog/file/${fileName}`,
@@ -63,6 +69,17 @@ const Uploader  = props => {
         fetch()
     }, [success])
 
+    useEffect(() => {
+            if (apontamentoOld.length !== 0){
+            axios.post(`${API_BASE}prog/apontlastupload`, {apontamentoOld: apontamentoOld
+                }).then((response) => {
+                console.log(response);
+                }).catch((error) => {
+                console.log("error");
+                })             
+            }
+        }, [apontamentoOld])
+
     function uploadWithFormData(){
         const formData = new FormData();
         //formData.append("title", title);
@@ -73,6 +90,24 @@ const Uploader  = props => {
                 setSuccess(true);
             }
         });
+    }
+
+   async function atualizaApontamento(e){
+        e.preventDefault();
+        //realizado enviando o apontamento antigo manualmente para o back e ele da um update na semana escolhida
+        try{
+            await axios.get(`${API_BASE}prog/semana/busca/apontamento/${semana}`,{params: {
+            off_set: off_set,
+            limit: limit,}
+            }).then((response) => {
+                setApontamentoOld(response.data);                
+            }).catch((error) => {
+                alert(`Erro: ${error}`);
+            });
+        } catch (err){
+            console.log(err);
+         }
+    
     }
 
     return (
@@ -94,6 +129,28 @@ const Uploader  = props => {
                         </div>
                     </li>))}
                 </ul>
+            </div>
+            <div>
+            <form onSubmit={atualizaApontamento}>
+                <label> Primeiro parâmetro busca apontamento - programação </label>
+                <input
+                placeholder="semana" 
+                value={semana}
+                onChange={e => setSemana(e.target.value)}
+                />
+                <input
+                placeholder="Offset" 
+                value={off_set}
+                onChange={e => setOff_set(e.target.value)}
+                />
+                <input
+                placeholder="Limit" 
+                value={limit}
+                onChange={e => setLimit(e.target.value)}
+                />
+                <label> 112 à 224 </label>
+                <button className="button" type="submit">Atualizar Apontamento</button>
+            </form>
             </div>
         </div>
     )

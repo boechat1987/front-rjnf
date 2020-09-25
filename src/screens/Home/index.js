@@ -10,7 +10,7 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import Dropdown from 'react-bootstrap/Dropdown';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Calendar from 'react-calendar';
-
+import { GoThumbsup, GoThumbsdown } from "react-icons/go";
 
 import axios from 'axios';
 
@@ -31,12 +31,18 @@ const user_id = getSavedIdLocal();
 const [viewProgUser, setViewProgUser] = useState(null);
 const [anotherUser, setAnotherUser] = useState(null);
 const [userOrdens, setUserOrdens] = useState([]);
+const [userOrdensWeek, setUserOrdensWeek] = useState([]);
 const [userSobreaviso, setUserSobreaviso] = useState([]);
 const [listUserToChange, setListUserToChange] = useState([]);
+const [programDoDia, setProgramDoDia] = useState([]);
 const [show, setShow] = useState(false);
 const [show2, setShow2] = useState(false);
+const [show3, setShow3] = useState(false);
+const [show4, setShow4] = useState(false);
 const [value, onChange] = useState(new Date());
 const [showCalendar, setShowCalendar] = useState(false);
+const [iw41Status, setIw41Status] = useState(false);
+const [iw41, setIw41] = useState();
 
 //pega o value e passa para o formato date-fns
 const hoje = format(value, 'eeee, dd/MM/yyyy',{locale:ptBR});
@@ -47,6 +53,36 @@ const hojeUS = format(value, 'yyyy-MM-dd',{locale:enUS});
 const semanaAtual = getWeek(value);
 /* const result = getDay(value, 'dd/MM/yyyy',{locale:ptBR}) */
 let programOfTheDay = [];
+let progAllOfTheDay = [];
+
+//abre programação da semana
+const handleClose = () => setShow(false);
+const handleShow = () => setShow(true);
+const handleClose2 = () => setShow2(false);
+const handleShow2 = () => setShow2(true);
+const handleClose3 = () => setShow3(false);
+const handleShow3 = () => setShow3(true);
+const handleClose4 = () => setShow4(false);
+const handleShow4 = () => {
+  
+  if(programDoDia.length !== 0 && anotherUser === null)
+  {
+    setShow4(true)
+  }
+  else if(programDoDia.length !== 0 && anotherUser === user_name)
+  {
+    setShow4(true)
+  }
+};
+const handleClickCalendar = ()=> setShowCalendar(!showCalendar);
+
+let oldestProgDate = 0;
+let oldestProgDateMaisUm = 0;
+let oldestProgDateMenosUm = 0;
+
+let oldestProgAllDate = 0;
+let oldestProgAllDateMaisUm = 0;
+let oldestProgAllDateMenosUm = 0;
 
 /* console.log(getSavedIdLocal(),'id', user_id, 'sem:',semanaAtual, 'dia sem',result) */
 
@@ -66,6 +102,18 @@ useEffect(() => {
   })}       
 
 }, [user_id, viewProgUser, semanaAtual]);
+
+//para filtrar somente um dia de cada vez
+useEffect(() => {
+  if (user_id){
+  axios.get(`${API_BASE}prog/semana/busca/${semanaAtual}`)
+  .then((ordensUsuarios) => {
+    setUserOrdensWeek(ordensUsuarios.data);
+  }).catch((error) => {
+  console.log(error, "error");
+  })}       
+
+}, [user_id, semanaAtual]);
 
 useEffect(() => {
   axios.get(`${API_BASE}users`)
@@ -91,6 +139,71 @@ useEffect(() => {
   setShowCalendar(false);
 }, [value]);
 
+useEffect(() => {
+  if (viewProgUser){
+  axios.get(`${API_BASE}prog/dia/busca/${hojeUS}`, {params: {
+    user_id: viewProgUser}
+  })
+  .then((programacao) => {
+    /* console.log(programacao.data) */
+    setProgramDoDia(programacao.data);
+  }).catch((error) => {
+  console.log(error, "error");
+  })
+}
+}, [hojeUS,user_id, iw41Status, viewProgUser]);
+
+/* console.log(viewProgUser) */
+/*console.log(user_id, hojeUS) */
+
+useEffect(() => {
+  if(programDoDia.length !== 0){
+    /* console.log(programDoDia) */
+    function handleStatusChange(iw41) {
+      setIw41(iw41);
+    }
+    if (verificaApontamento(programDoDia) === "true"){ 
+      handleStatusChange(true);
+      /* console.log("thumbsUp") */
+    }else if(verificaApontamento(programDoDia) === "false") {
+      /* console.log("thumbsDown") */
+      handleStatusChange(false);
+    }
+  }else{
+    setIw41(null)
+  }
+}, [programDoDia, iw41]);
+
+async function handleClickIw41(bool){
+  const statusApont = bool;
+  const prog_id = verificaProgId(programDoDia);
+  await axios.post(`${API_BASE}prog/apontamento/${prog_id}`, {
+    apontamento: statusApont,
+  })
+  .then(function (response) {
+    setIw41Status(!iw41Status);
+    handleClose4();
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+}
+
+/* console.log("iw41:", iw41)
+console.log(programDoDia) */
+function verificaApontamento(ProgramDoDia){
+  for (let program of ProgramDoDia){
+    return program.apontamento
+  }
+}
+
+
+function verificaProgId(ProgramDoDia){
+  for (let program of ProgramDoDia){
+    return program.programacao_id
+  }
+}
+
 //scroll smooth
 function onLinkClick(id) {
   const elementId = id;
@@ -105,19 +218,6 @@ function handleClickList(name){
   }
 }
 
-//abre programação da semana
-const handleClose = () => setShow(false);
-const handleShow = () => setShow(true);
-const handleClose2 = () => setShow2(false);
-const handleShow2 = () => setShow2(true);
-const handleClickCalendar = ()=> setShowCalendar(!showCalendar);
-
-
-
-let oldestProgDate = 0;
-let oldestProgDateMaisUm = 0;
-let oldestProgDateMenosUm = 0;
-
 try {//oldestprog que vai na principal
   userOrdens.forEach (ListOrdensPeloDia => {
     if (ListOrdensPeloDia.ordems.length !== 0){
@@ -128,7 +228,7 @@ try {//oldestprog que vai na principal
             else if(isBefore((parseISO(oldestProgDate)), (parseISO(oldest.created_at)))){
               oldestProgDate = oldest.created_at;
             } 
-            console.log(oldestProgDate)
+            /* console.log(oldestProgDate) */
           }
         } 
       });
@@ -136,6 +236,24 @@ try {//oldestprog que vai na principal
       return console.log(error, "não tem prog")
     };
 
+    try {//oldestprog que vai na principal
+      userOrdensWeek.forEach (ListOrdensPeloDia => {
+        if (ListOrdensPeloDia.ordems.length !== 0){
+              for (let oldest of ListOrdensPeloDia.ordems){
+                if (oldestProgAllDate === 0){
+                  oldestProgAllDate = oldest.created_at;
+                }
+                else if(isBefore((parseISO(oldestProgAllDate)), (parseISO(oldest.created_at)))){
+                  oldestProgAllDate = oldest.created_at;
+                } 
+                /* console.log(oldestProgAllDate) */
+              }
+            } 
+          });
+        }catch (error) {
+          return console.log(error, "não tem prog")
+        };
+  
   try {//programação do dia que vai na principal
   userOrdens.forEach (ListOrdensPeloDia => {
     if (ListOrdensPeloDia.ordems.length !== 0){
@@ -167,7 +285,7 @@ try {//oldestprog que vai na principal
   const showUserProgram = programOfTheDay.map((showprog) => {
     if (hojeUS === showprog.data){
       const osId = showprog.osId;
-      console.log(showprog.numero_extra, showprog.numero)
+      /* console.log(showprog.numero_extra, showprog.numero) */
       return <div className="section-text" key={osId}>
         <ul >
           {showprog.local !== "0" ? <li>Local: {showprog.local}</li> : <li></li>}
@@ -201,23 +319,8 @@ try {//oldestprog que vai na principal
   return array.slice(0, n);
 };
 
-/* console.log(showUserProgram); */
   let sunday = null; let monday = null; let tuesday = null; 
   let wednesday = null; let thusday = null; let friday = null; let saturday = null; 
-
-/* //como mostra a programação completa
-  const showUserProgramCompleta = programOfTheDay.map((showprog) => {
-      const osId = showprog.osId; 
-      return <div className="section-text" key={osId}>
-         <ul>
-          {showprog.local !== "0" ? <li>Local: {showprog.local}</li> : <li>Local: </li>}
-          {showprog.numero_extra ? <li>Número OS: {showprog.numero} / {showprog.numero_extra}</li> : <li>Número OS: {showprog.numero}</li>}
-          <li>Descrição: {showprog.text}</li>
-          {showprog.apoio !== "0" ? <li>Apoio: {showprog.apoio}</li> : <li>Apoio: </li>}
-          {showprog.transporte !== "0" ? <li>Transporte: {showprog.transporte}</li> : <li>Transporte: </li>}
-        </ul> 
-      </div>;
-  }); */
 
   // programação do dia retirando as datas repetidas
   const showUserProgramDailySunday = programOfTheDay.map((showprog) => {
@@ -370,7 +473,69 @@ try {//oldestprog que vai na principal
   const areaSete = userSobreaviso.map((showSobreavisoAreaSete) =>{
     return showSobreavisoAreaSete.tecAreaSete
   })
-  
+
+  //precisa acertar para mostrar a programação completa do dia para todos os usuários
+  userOrdensWeek.forEach( (showProgAll) =>{ 
+      if (showProgAll.ordems.length !== 0){
+        for (let days of showProgAll.ordems){
+          const data = showProgAll.data.split("T",1);
+            oldestProgAllDateMaisUm = addMinutes((parseISO(oldestProgAllDate)), 1)
+            oldestProgAllDateMenosUm = subMinutes((parseISO(oldestProgAllDate)), 1)
+             if(isWithinInterval((parseISO(days.created_at)), { start: oldestProgAllDateMenosUm, end: oldestProgAllDateMaisUm})){
+              if(data[0] === hojeUS){
+              progAllOfTheDay.push(
+                      {
+                          data: data[0],
+                          text: days.text,
+                          prog_id: days.programacao_id,
+                          numero: days.numero,
+                          osId: days.id,
+                          numero_extra: days.numero_extra,
+                          apoio: showProgAll.apoio,
+                          local: showProgAll.local,
+                          transporte: showProgAll.transporte,
+                          user_id: days.user_id
+                      })
+                    }
+                     
+              } 
+        }
+    }
+  });
+  /* console.log(listUserToChange) */
+  let usernameAnterior = false;
+  let username = "";
+  //PRECISA ACERTAR PARA O CASO DE MAIS DE UMA PROG NO BD
+  const showUserProgAll = progAllOfTheDay.map((showprog) => {
+    
+    for (let item of listUserToChange){
+    if (showprog.user_id === item.id){
+      if (username === item.username){
+        usernameAnterior = true;
+      }else {
+        usernameAnterior = false;
+      }
+      username = item.username;
+      const osId = showprog.osId;
+      return <div className="section-daily-fullProg" key={osId}>
+        {!usernameAnterior ? <hr></hr> : null}
+        <ul className="section-daily-fullProg-li">
+          {!usernameAnterior ? <li>{username}</li> : null}
+        </ul>
+        {!usernameAnterior ? <hr></hr> : null}
+        <ul >
+          {showprog.local !== "0" ? <li>Local: {showprog.local}</li> : <li>Local: </li>}
+          {showprog.numero_extra ? <li>Número OS: {showprog.numero} / {showprog.numero_extra}</li> : <li>Número OS: {showprog.numero}</li>}
+          <li>Descrição: {showprog.text}</li>
+          {showprog.apoio !== "0" ? <li>Apoio: {showprog.apoio}</li> : <li>Apoio: </li>}
+          {showprog.transporte !== "0" ? <li>Transporte: {showprog.transporte}</li> : <li>Transporte: </li>}
+        </ul>
+      </div>;
+      
+    }}
+  return null;      
+  });
+
 /* console.log(areaUm, areaSete) */
 /* console.log('programday',programOfTheDay, 'showuser', showUserProgram, 'username', user_name, 'progCompleta', showUserProgramCompleta) */
 
@@ -402,8 +567,9 @@ try {//oldestprog que vai na principal
         </header>
         <div className="main">
               <div id="programacaoDoDia" className="section">
-                <h2>Programação de {hojeDiaSemana}</h2>
-                {showUserProgram.length ? showUserProgram : <div className="section-text">Não há programação cadastrada</div>}
+                <h2 className="click_h2" onClick={handleShow3}>Programação de {hojeDiaSemana}</h2>
+                <span className="select-iw41" onClick={handleShow4}>IW41 realizado?</span>{iw41 === true ? <GoThumbsup></GoThumbsup>: <GoThumbsdown></GoThumbsdown>}
+                {showUserProgram.length ? showUserProgram : <div className="section-text">Carregando...</div>}
                 <button href="#" className="info-link" onClick={handleShow} >Mais...</button>
                  <div className="menu-style">
                     <DropdownButton
@@ -501,6 +667,43 @@ try {//oldestprog que vai na principal
               </div>
         </div>
         {/* modal mais info. importantes */}
+        <Modal size= "sm" show={show4} onHide={handleClose4}>
+        <Modal.Header closeButton>
+          <Modal.Title>Apontamento</Modal.Title>
+        </Modal.Header>
+              <Modal.Body>
+                Realizado apontamento do dia {hojeBR} ?
+              </Modal.Body>
+        <Modal.Footer>
+           <Button variant="primary" onClick={()=>handleClickIw41("true")}>
+            Sim
+          </Button>
+          <Button variant="primary" onClick={()=>handleClickIw41("false")}>
+            Não
+          </Button>
+          <Button variant="secondary" onClick={handleClose4}>
+            Fechar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+        <Modal show={show3} onHide={handleClose3}>
+        <Modal.Header closeButton>
+          <Modal.Title>Programação do Dia Completa</Modal.Title>
+        </Modal.Header>
+              <Modal.Body>
+                <div className="section-daily">{hoje}<br></br></div>
+                {showUserProgAll}
+                
+              </Modal.Body>
+        <Modal.Footer>
+          {/* <Button variant="primary" onClick={()=> handleClickOnAnotherUser(document.getElementById('SeleçãoUsuario').value)}>
+            Alterar
+          </Button> */}
+          <Button variant="secondary" onClick={handleClose3}>
+          Fechar
+          </Button>
+        </Modal.Footer>
+      </Modal>
         <Modal show={show2} onHide={handleClose2}>
         <Modal.Header closeButton>
           <Modal.Title>Info. Importantes</Modal.Title>
@@ -560,7 +763,7 @@ try {//oldestprog que vai na principal
             Alterar
           </Button> */}
           <Button variant="secondary" onClick={handleClose}>
-            Close
+          Fechar
           </Button>
         </Modal.Footer>
       </Modal>
