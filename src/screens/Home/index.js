@@ -2,7 +2,9 @@ import React, { useEffect, useState} from "react";
 //import { Link } from "react-router-dom";
 import logoCalendario from "../../assets/calendar.svg";
 /* import { getWeek ,format, getDay, isBefore, parseISO, isWithinInterval, subMinutes, addMinutes, isMonday, isSunday, isTuesday, isWednesday, isThursday, isFriday, isSaturday } from 'date-fns' */
-import { getWeek ,format, isBefore, parseISO, isWithinInterval, subMinutes, addMinutes, isMonday, isSunday, isTuesday, isWednesday, isThursday, isFriday, isSaturday } from 'date-fns'
+import { getWeek ,format, isBefore, parseISO, isWithinInterval, subMinutes, 
+addMinutes, isMonday, isSunday, isTuesday, isWednesday, isThursday, isFriday, isSaturday,
+getDaysInMonth, getMonth, getYear } from 'date-fns'
 import { ptBR, enUS } from 'date-fns/locale'
 import {Modal} from 'react-bootstrap';
 import {Button} from 'react-bootstrap';
@@ -34,12 +36,14 @@ const [anotherUser, setAnotherUser] = useState(null);
 const [userOrdens, setUserOrdens] = useState([]);
 const [userOrdensWeek, setUserOrdensWeek] = useState([]);
 const [userSobreaviso, setUserSobreaviso] = useState([]);
+const [fullSobreaviso, setFullSobreaviso] = useState([]);
 const [listUserToChange, setListUserToChange] = useState([]);
 const [programDoDia, setProgramDoDia] = useState([]);
 const [show, setShow] = useState(false);
 const [show2, setShow2] = useState(false);
 const [show3, setShow3] = useState(false);
 const [show4, setShow4] = useState(false);
+const [show5, setShow5] = useState(false);
 const [value, onChange] = useState(new Date());
 const [showCalendar, setShowCalendar] = useState(false);
 const [iw41Status, setIw41Status] = useState(false);
@@ -52,9 +56,13 @@ const hojeBRshort = format(value, 'dd/MM',{locale:ptBR});
 const hojeDiaSemana = format(value, 'eeee',{locale:ptBR});
 const hojeUS = format(value, 'yyyy-MM-dd',{locale:enUS});
 const semanaAtual = getWeek(value);
+
+/* console.log(hojeUS, "mes:", getMonth(parseISO(hojeUS)),"ultimo dia:", 
+getDaysInMonth(parseISO(hojeUS)),"ano:", getYear(parseISO(hojeUS))) */
 /* const result = getDay(value, 'dd/MM/yyyy',{locale:ptBR}) */
 let programOfTheDay = [];
 let progAllOfTheDay = [];
+let sobreavisoMes= [];
 
 //abre programação da semana
 const handleClose = () => setShow(false);
@@ -75,6 +83,10 @@ const handleShow4 = () => {
     setShow4(true)
   }
 };
+const handleClose5 = () => setShow5(false);
+const handleShow5 = () => {
+  /* handleClickSobreaviso(); */
+  setShow5(true)};
 const handleClickCalendar = ()=> setShowCalendar(!showCalendar);
 
 let oldestProgDate = 0;
@@ -134,6 +146,15 @@ useEffect(() => {
   }).catch((error) => {
   console.log(error, "error");
   })
+
+  axios.get(`${API_BASE}prog/sobreaviso`)
+  .then(function (response) {
+    setFullSobreaviso(response.data);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+  
 }, [hojeBR]);
 
 useEffect(() => {
@@ -156,7 +177,7 @@ useEffect(() => {
 fetch()
 }, [hojeUS,user_id, iw41Status, viewProgUser, iw41]);
 
-console.log(programDoDia)
+/* console.log(programDoDia) */
 /* console.log(viewProgUser) */
 /*console.log(user_id, hojeUS) */
 
@@ -192,7 +213,47 @@ async function handleClickIw41(bool){
     console.log(error);
   });
 }
+//nao estou conseguindo consertar para mostrar o sobreaviso do mes, verificar se vale usar o useeffect
 
+  const SobreavisoFiltered = fullSobreaviso.filter(function(sobreaviso) {
+    const monthParsed = ((getMonth(parseISO(hojeUS)))+1).toString();
+    let zero = "";
+    if (monthParsed<=9){
+      zero="0"
+    }
+    let str = ("01/"+zero+monthParsed+"/"+(getYear(parseISO(hojeUS))).toString());
+    let mes = str.includes("/"+zero+monthParsed+"/", 2);
+    const total = getDaysInMonth(parseISO(hojeUS))
+    
+    if (mes){
+      let count=0;
+      for (let i=1; i<=total; i++){
+        if(i>=1 && i<=9){
+          count = "0"+i.toString();
+        }
+        else{
+          count = i.toString();
+        }    
+        /* console.log(sobreaviso.date, (count+"/"+zero+monthParsed+"/"+(getYear(parseISO(hojeUS))).toString())) */
+          if (sobreaviso.date === (count+"/"+zero+monthParsed+"/"+(getYear(parseISO(hojeUS))).toString())){
+            const data = sobreaviso.date.slice(0,5);
+            sobreavisoMes.push(
+            {
+            data: data,
+            tecAreaUm:sobreaviso.tecAreaUm,
+            tecAreaDois:sobreaviso.tecAreaDois,
+            tecAreaSete:sobreaviso.tecAreaSete,
+            telefone:sobreaviso.telefone,
+          })
+        }
+      }
+    return sobreavisoMes
+  }
+    else{
+    return null;}
+  });
+
+console.log(sobreavisoMes)
 /* console.log("iw41:", iw41)
 console.log(programDoDia) */
 function verificaApontamento(ProgramDoDia){
@@ -622,7 +683,7 @@ try {//oldestprog que vai na principal
                   className="d-inline-block align-top"
                 /> */}
                 {/* <img className="section-img" src="Logo" alt="important graph"></img> */}
-                <button href="#" className="info-link">Mais...</button>
+                <button href="#" className="info-link" onClick={handleShow5}>Mais...</button>
               </div>
               <div id="transporte"className="section">
                 <h2>Transporte</h2>
@@ -649,11 +710,14 @@ try {//oldestprog que vai na principal
                   <div className="divisao-matriculas-marte">
                   <p>Matrícula dos Martes:</p>
                   <ul>
+                    <li>Sérgio Braz: 70004502</li>
+                    <li className="li-centro-trab">Centro trab. Cal2t</li>
                     <li>Ronaldo: 49728663</li>
                     <li>Jeanilson: 49728872</li>
+                    <li className="li-centro-trab">Centro trab. Mec2t</li>
                     <li>Wescley: 41037730</li>
-                    <li>Sérgio Braz: 70004502</li>
                     <li>Jorge Bento: 49727525</li>
+                    <li className="li-centro-trab">Centro trab. Ins2t</li>
                     <li>Cid: 70795725</li>
                   </ul>
                   </div>
@@ -671,6 +735,31 @@ try {//oldestprog que vai na principal
               </div>
         </div>
         {/* modal mais info. importantes */}
+        <Modal size= "sm" show={show5} onHide={handleClose5}>
+        <Modal.Header closeButton>
+          <Modal.Title>Sobreaviso do Mês</Modal.Title>
+        </Modal.Header>
+              <Modal.Body>
+                <div className="class-sobre">
+                <div > Dia </div> <div>Área 1 </div> <div> Área 2 </div> <div>Área 7</div>
+                </div>
+              {sobreavisoMes.map(sob => 
+              <div className="class-sobre-text">
+              <div className="center" >{sob.data}</div>
+              <div>{sob.tecAreaUm}</div>
+              <div>{sob.tecAreaDois}</div>
+              <div>{sob.tecAreaSete}</div>
+              </div>
+              )
+              }
+              </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose5}>
+            Fechar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
         <Modal size= "sm" show={show4} onHide={handleClose4}>
         <Modal.Header closeButton>
           <Modal.Title>Apontamento</Modal.Title>
@@ -690,6 +779,7 @@ try {//oldestprog que vai na principal
           </Button>
         </Modal.Footer>
       </Modal>
+
         <Modal show={show3} onHide={handleClose3}>
         <Modal.Header closeButton>
           <Modal.Title>Programação do Dia Completa</Modal.Title>
@@ -713,18 +803,22 @@ try {//oldestprog que vai na principal
           <Modal.Title>Info. Importantes</Modal.Title>
         </Modal.Header>
               <Modal.Body><div className="divisao-matriculas-proprio">
-                  <p>Matrícula dos Próprios:</p>
+                  <ul>Matrícula dos Próprios:</ul>
                   <ul>
+                    <li>Daniel: 4925</li>
+                    <li>José Rodrigo: 5180</li>
+                    <li className="li-centro-trab">Centro trab. Ins2p</li>
                     <li>Affonso: 2475</li>
                     <li>Boechat: 7420</li>
-                    <li>Caio: 3859</li>
-                    <li>Daniel: 4925</li>
                     <li>Davi: 3905</li>
-                    <li>Fábio Bertuzzi: 5026</li>
-                    <li>José Rodrigo: 5180</li>
-                    <li>Jorge: 5825</li>
-                    <li>Manhães: 5711</li>
                     <li>Wallace: 6747</li>
+                    <li className="li-centro-trab">Centro trab. Aut2p</li>
+                    <li>Caio: 3859</li>
+                    <li className="li-centro-trab">Centro trab. Mec2p</li>
+                    <li>Fábio Bertuzzi: 5026</li>
+                    <li>Jorge: 5825</li>
+                    <li className="li-centro-trab">Centro trab. Ele2p</li>
+                    <li>Manhães: 5711</li>
                   </ul>
                   </div></Modal.Body>
         <Modal.Footer>

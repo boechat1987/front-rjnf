@@ -317,4 +317,33 @@
 .section-daily-fullProg-li{
   padding: 10px;
   text-align: center;
-}  
+}
+
+.li-centro-trab{
+  font-weight: bold;
+}
+
+.class-sobre {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  text-decoration: none;
+  font-size: 1em;
+  color: var(--red);
+  border: none;
+}
+
+.class-sobre-text {
+  display: flex;
+  align-items: center; 
+  justify-content: space-between;
+  text-decoration: none;
+  font-size: 1em;
+  border: none;
+  width: auto;
+  height: 1.5em;
+}
+
+.center {
+  text-align: center;
+}
