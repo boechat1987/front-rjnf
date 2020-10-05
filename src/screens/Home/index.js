@@ -215,7 +215,7 @@ async function handleClickIw41(bool){
 }
 //nao estou conseguindo consertar para mostrar o sobreaviso do mes, verificar se vale usar o useeffect
 
-  const SobreavisoFiltered = fullSobreaviso.filter(function(sobreaviso) {
+  fullSobreaviso.filter(function(sobreaviso) {
     const monthParsed = ((getMonth(parseISO(hojeUS)))+1).toString();
     let zero = "";
     if (monthParsed<=9){
@@ -239,6 +239,7 @@ async function handleClickIw41(bool){
             const data = sobreaviso.date.slice(0,5);
             sobreavisoMes.push(
             {
+            index: count,
             data: data,
             tecAreaUm:sobreaviso.tecAreaUm,
             tecAreaDois:sobreaviso.tecAreaDois,
@@ -253,7 +254,6 @@ async function handleClickIw41(bool){
     return null;}
   });
 
-console.log(sobreavisoMes)
 /* console.log("iw41:", iw41)
 console.log(programDoDia) */
 function verificaApontamento(ProgramDoDia){
@@ -744,7 +744,7 @@ try {//oldestprog que vai na principal
                 <div > Dia </div> <div>Área 1 </div> <div> Área 2 </div> <div>Área 7</div>
                 </div>
               {sobreavisoMes.map(sob => 
-              <div className="class-sobre-text">
+              <div key= {sob.index} className="class-sobre-text">
               <div className="center" >{sob.data}</div>
               <div>{sob.tecAreaUm}</div>
               <div>{sob.tecAreaDois}</div>
