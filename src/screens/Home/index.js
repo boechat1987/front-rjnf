@@ -44,6 +44,7 @@ const [show2, setShow2] = useState(false);
 const [show3, setShow3] = useState(false);
 const [show4, setShow4] = useState(false);
 const [show5, setShow5] = useState(false);
+const [show6, setShow6] = useState(false);
 const [value, onChange] = useState(new Date());
 const [showCalendar, setShowCalendar] = useState(false);
 const [iw41Status, setIw41Status] = useState(false);
@@ -86,7 +87,12 @@ const handleShow4 = () => {
 const handleClose5 = () => setShow5(false);
 const handleShow5 = () => {
   /* handleClickSobreaviso(); */
-  setShow5(true)};
+  setShow5(true)
+};
+
+const handleClose6 = () => setShow6(false);
+const handleShow6 = () => setShow6(true);
+
 const handleClickCalendar = ()=> setShowCalendar(!showCalendar);
 
 let oldestProgDate = 0;
@@ -213,7 +219,6 @@ async function handleClickIw41(bool){
     console.log(error);
   });
 }
-//nao estou conseguindo consertar para mostrar o sobreaviso do mes, verificar se vale usar o useeffect
 
   fullSobreaviso.filter(function(sobreaviso) {
     const monthParsed = ((getMonth(parseISO(hojeUS)))+1).toString();
@@ -600,7 +605,32 @@ try {//oldestprog que vai na principal
     }}
   return null;      
   });
+let diaAnterior = [];
+let validaReturn = true;
+const showTransporteOfTheWeek = programOfTheDay.map((showtransp)=>{
+  const osId = showtransp.osId;
+  
+  diaAnterior.forEach((verificaOsDias) =>{
+    if (verificaOsDias.dia === showtransp.data){
+      validaReturn = false;
+    }
+    else{
+      validaReturn = true;
+    }
+  })
 
+  if (validaReturn){
+  diaAnterior.push ({dia: showtransp.data});
+  return <div key={osId}>
+        <ul >
+          {showtransp.data}<br></br>
+          {showtransp.transporte !== "0" ? <li>Transporte: {showtransp.transporte}</li> : <li>Transporte: </li>}
+        </ul>
+       </div>}
+  else{
+    return <div key={osId}></div>
+  }
+});
 /* console.log(areaUm, areaSete) */
 /* console.log('programday',programOfTheDay, 'showuser', showUserProgram, 'username', user_name, 'progCompleta', showUserProgramCompleta) */
 
@@ -703,10 +733,10 @@ try {//oldestprog que vai na principal
                       <div className="fourMot">Tel: (21) --</div>
                         <div className="four-twoMot"></div>
                 </div>
-                <button href="#" className="info-link">Mais...</button>
+                <button href="#" className="info-link" onClick={handleShow6}>Mais...</button>
               </div>
               <div id="matriculas" className="section">
-                <h2>Info. Importantes</h2>
+                <h2>Infomações de matrículas</h2>
                   <div className="divisao-matriculas-marte">
                   <p>Matrícula dos Martes:</p>
                   <ul>
@@ -734,6 +764,25 @@ try {//oldestprog que vai na principal
                 <button href="#" className="info-link">Mais...</button>
               </div>
         </div>
+        <Modal show={show6} onHide={handleClose6}>
+        <Modal.Header closeButton>
+          <Modal.Title>Transporte da Semana</Modal.Title>
+        </Modal.Header>
+              <Modal.Body><div /* className="divisao-matriculas-proprio" */>
+                  <ul>
+                    <li>{showTransporteOfTheWeek}</li>
+                  </ul>
+                  </div>
+              </Modal.Body>
+        <Modal.Footer>
+          {/* <Button variant="primary" onClick={()=> handleClickOnAnotherUser(document.getElementById('SeleçãoUsuario').value)}>
+            Alterar
+          </Button> */}
+          <Button variant="secondary" onClick={handleClose6}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
         {/* modal mais info. importantes */}
         <Modal size= "sm" show={show5} onHide={handleClose5}>
         <Modal.Header closeButton>
