@@ -347,3 +347,25 @@
 .center {
   text-align: center;
 }
+
+.table_address { 
+  width: 100%; 
+  border-collapse: collapse; 
+}
+/* Zebra striping */
+.tr_odd_address { 
+  background: #eee; 
+}
+.th_address { 
+  background: var(--red); 
+  color: white; 
+  font-weight: bold;
+  padding: 6px; 
+  border: 1px solid #ccc; 
+  text-align: left; 
+}
+.td_address { 
+  padding: 6px; 
+  border: 1px solid #ccc; 
+  text-align: left; 
+}

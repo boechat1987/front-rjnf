@@ -45,6 +45,7 @@ const [show3, setShow3] = useState(false);
 const [show4, setShow4] = useState(false);
 const [show5, setShow5] = useState(false);
 const [show6, setShow6] = useState(false);
+const [show7, setShow7] = useState(false);
 const [value, onChange] = useState(new Date());
 const [showCalendar, setShowCalendar] = useState(false);
 const [iw41Status, setIw41Status] = useState(false);
@@ -92,6 +93,8 @@ const handleShow5 = () => {
 
 const handleClose6 = () => setShow6(false);
 const handleShow6 = () => setShow6(true);
+const handleClose7 = () => setShow7(false);
+const handleShow7 = () => setShow7(true);
 
 const handleClickCalendar = ()=> setShowCalendar(!showCalendar);
 
@@ -754,9 +757,51 @@ const showTransporteOfTheWeek = programOfTheDay.map((showtransp)=>{
                 <button className="info-link" href="#" onClick={handleShow2}>Mais...</button>
               </div>
               <div id="pendencias" className="section">
-                <h2 className="bigtitle-title">Avisos / Pendências</h2>
-                <p>Sem Avisos e pendências</p>
-                <button href="#" className="info-link">Mais...</button>
+                <h2 className="bigtitle-title">Códigos das estações</h2>
+                <table className="table_address">
+                  <thead>
+                  <tr >
+                    <th className="th_address">Instalação</th>
+                    <th className="th_address">Código do cliente</th>
+                    <th className="th_address">Código da instalação</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr >
+                    <td className="td_address">Guapimirim</td>
+                    <td className="td_address">ENEL 6151688-0</td>
+                    <td className="td_address">33366043</td>
+                  </tr>
+                  
+                  <tr className="tr_odd_address">
+                    <td className="td_address">Guapimirim</td>
+                    <td className="td_address">ENEL 2588497-2</td>
+                    <td className="td_address">-</td>
+                  </tr>
+                  
+                  <tr >
+                    <td className="td_address">Anel de Gás</td>
+                    <td className="td_address">ENEL 1796463-6</td>
+                    <td className="td_address">-</td>
+                  </tr>
+                  <tr className="tr_odd_address"> 
+                    <td className="td_address">Termorio</td>
+                    <td className="td_address">ENEL 3228550-7</td>
+                    <td className="td_address">2000186</td>
+                  </tr>
+                  <tr >
+                    <td className="td_address">Manifold</td>
+                    <td className="td_address">ENEL 3734545-1</td>
+                    <td className="td_address">28855959</td>
+                  </tr>
+                  <tr className="tr_odd_address">
+                    <td className="td_address">PE Caxias</td>
+                    <td className="td_address">Light 20006137</td>
+                    <td className="td_address">420846979</td>
+                  </tr>
+                  </tbody>
+                </table>
+                <button href="#" className="info-link" onClick={handleShow7}>Mais...</button>
               </div>
               <div id="outros" className="section">
                 <h2>Outros</h2>
@@ -764,6 +809,47 @@ const showTransporteOfTheWeek = programOfTheDay.map((showtransp)=>{
                 <button href="#" className="info-link">Mais...</button>
               </div>
         </div>
+        <Modal show={show7} onHide={handleClose7}>
+        <Modal.Header closeButton>
+          <Modal.Title>Códigos das estações</Modal.Title>
+        </Modal.Header>
+              <Modal.Body>
+              <table >
+                  <thead>
+                  <tr className="tr_odd_address">
+                    <th className="th_address">Instalação</th>
+                    <th className="th_address">Código do cliente</th>
+                    <th className="th_address">Código da instalação</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td className="td_address">VTC-14 (Colégio-Papucaia)</td>
+                    <td className="td_address">CERCI 166802</td>
+                    <td className="td_address">medidor 3592</td>
+                  </tr>
+                  <tr className="tr_odd_address">
+                    <td className="td_address">VTC-16 Magé</td>
+                    <td className="td_address">5210697-7</td>
+                    <td className="td_address">3194002</td>
+                  </tr>
+                  <tr>
+                    <td className="td_address">Scrapper Gasduc</td>
+                    <td className="td_address">ENEL 1502068-0</td>
+                    <td className="td_address">2125593</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </Modal.Body>
+        <Modal.Footer>
+          {/* <Button variant="primary" onClick={()=> handleClickOnAnotherUser(document.getElementById('SeleçãoUsuario').value)}>
+            Alterar
+          </Button> */}
+          <Button variant="secondary" onClick={handleClose7}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
         <Modal show={show6} onHide={handleClose6}>
         <Modal.Header closeButton>
           <Modal.Title>Transporte da Semana</Modal.Title>
@@ -849,7 +935,7 @@ const showTransporteOfTheWeek = programOfTheDay.map((showtransp)=>{
       </Modal>
         <Modal show={show2} onHide={handleClose2}>
         <Modal.Header closeButton>
-          <Modal.Title>Info. Importantes</Modal.Title>
+          <Modal.Title>Infomações de matrículas</Modal.Title>
         </Modal.Header>
               <Modal.Body><div className="divisao-matriculas-proprio">
                   <ul>Matrícula dos Próprios:</ul>
