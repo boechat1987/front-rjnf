@@ -1,5 +1,6 @@
 import React, { useEffect, useState} from "react"; 
-//import { Link } from "react-router-dom";
+/* import { Link } from "react-router-dom"; */
+import {FiMapPin} from "react-icons/fi"
 import logoCalendario from "../../assets/calendar.svg";
 /* import { getWeek ,format, getDay, isBefore, parseISO, isWithinInterval, subMinutes, addMinutes, isMonday, isSunday, isTuesday, isWednesday, isThursday, isFriday, isSaturday } from 'date-fns' */
 import { getWeek ,format, isBefore, parseISO, isWithinInterval, subMinutes, 
@@ -804,8 +805,66 @@ const showTransporteOfTheWeek = programOfTheDay.map((showtransp)=>{
                 <button href="#" className="info-link" onClick={handleShow7}>Mais...</button>
               </div>
               <div id="outros" className="section">
-                <h2>Outros</h2>
-                <p>Não há outras informações </p>
+                <h2>Estações</h2>
+                <table className="table_address">
+                  <thead>
+                  <tr >
+                    <th className="th_address">Instalação</th>
+                    <th className="th_address">Endereço</th>
+                    <th className="th_address">Localização</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr >
+                    <td className="td_address">Termorio 1 e 2</td>
+                    <td className="td_address">R. Hualaga, 317 - tp 110</td>
+                    <td className="td_address">
+                      <a href="http://maps.google.com/maps?saddr=-22.713021,-43.261765" target={"_blank"} rel="noopener noreferrer"> 
+                      <FiMapPin size={16} color="#E02041" />
+                      Gmaps
+                      </a>
+                    </td>
+                  </tr>
+                  
+                  <tr className="tr_odd_address">
+                    <td className="td_address">Manifold</td>
+                    <td className="td_address">R. Elisa Maria</td>
+                    <td className="td_address">
+                      <a href="http://maps.google.com/maps?saddr=-22.706805,-43.240841" target={"_blank"} rel="noopener noreferrer"> 
+                      <FiMapPin size={16} color="#E02041" />
+                      Gmaps
+                      </a></td>
+                  </tr>
+                  
+                  <tr >
+                    <td className="td_address">Guapimirim</td>
+                    <td className="td_address">Jardim Anapolis- tp 17</td>
+                    <td className="td_address">
+                      <a href="http://maps.google.com/maps?saddr=-22.599013,-43.924836" target={"_blank"} rel="noopener noreferrer"> 
+                      <FiMapPin size={16} color="#E02041" />
+                      Gmaps
+                      </a></td>
+                  </tr>
+                  <tr className="tr_odd_address"> 
+                    <td className="td_address">Duque de Caxias</td>
+                    <td className="td_address">Av. Djalma Dutra, S/N - tp 142</td>
+                    <td className="td_address">
+                      <a href="http://maps.google.com/maps?saddr=-22.693816,-43.300165" target={"_blank"} rel="noopener noreferrer"> 
+                      <FiMapPin size={16} color="#E02041" />
+                      Gmaps
+                      </a></td>
+                  </tr>
+                  <tr >
+                    <td className="td_address">Anel de Gás</td>
+                    <td className="td_address">Av. Fabor, 300 - tp 118</td>
+                    <td className="td_address">
+                      <a href="http://maps.google.com/maps?saddr=-22.715101,-43.263209" target={"_blank"} rel="noopener noreferrer"> 
+                      <FiMapPin size={16} color="#E02041" />
+                      Gmaps
+                      </a></td>
+                  </tr>
+                  </tbody>
+                </table>
                 <button href="#" className="info-link">Mais...</button>
               </div>
         </div>
