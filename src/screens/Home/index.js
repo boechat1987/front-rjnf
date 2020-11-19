@@ -819,7 +819,7 @@ const showTransporteOfTheWeek = programOfTheDay.map((showtransp)=>{
                     <td className="td_address">Termorio 1 e 2</td>
                     <td className="td_address">R. Hualaga, 317 - tp 110</td>
                     <td className="td_address">
-                      <a href="http://maps.google.com/maps?saddr=-22.713021,-43.261765" target={"_blank"} rel="noopener noreferrer"> 
+                      <a href="http://maps.google.com/maps/search/?saddr=-22.713021,-43.261765" target={"_blank"} rel="noopener noreferrer"> 
                       <FiMapPin size={16} color="#E02041" />
                       Gmaps
                       </a>
@@ -830,7 +830,7 @@ const showTransporteOfTheWeek = programOfTheDay.map((showtransp)=>{
                     <td className="td_address">Manifold</td>
                     <td className="td_address">R. Elisa Maria</td>
                     <td className="td_address">
-                      <a href="http://maps.google.com/maps?saddr=-22.706805,-43.240841" target={"_blank"} rel="noopener noreferrer"> 
+                      <a href="http://maps.google.com/maps/?api=1&query=-22.706805,-43.240841" target={"_blank"} rel="noopener noreferrer"> 
                       <FiMapPin size={16} color="#E02041" />
                       Gmaps
                       </a></td>
