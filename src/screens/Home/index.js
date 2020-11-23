@@ -819,7 +819,7 @@ const showTransporteOfTheWeek = programOfTheDay.map((showtransp)=>{
                     <td className="td_address">Termorio 1 e 2</td>
                     <td className="td_address">R. Hualaga, 317 - tp 110</td>
                     <td className="td_address">
-                      <a href="http://maps.google.com/maps/search/?api=1&query=-22.713021,-43.261765" target={"_blank"} rel="noopener noreferrer"> 
+                      <a href="http://maps.google.com/maps/place/-22.713021,-43.261765" target={"_blank"} rel="noopener noreferrer"> 
                       <FiMapPin size={16} color="#E02041" />
                       Gmaps
                       </a>
@@ -830,7 +830,7 @@ const showTransporteOfTheWeek = programOfTheDay.map((showtransp)=>{
                     <td className="td_address">Manifold</td>
                     <td className="td_address">R. Elisa Maria</td>
                     <td className="td_address">
-                      <a href="http://maps.google.com/maps/search/?api=1&query=-22.706805,-43.240841" target={"_blank"} rel="noopener noreferrer"> 
+                      <a href="http://maps.google.com/maps/place/-22.707641301717008,-43.24036893378129" target={"_blank"} rel="noopener noreferrer"> 
                       <FiMapPin size={16} color="#E02041" />
                       Gmaps
                       </a></td>
@@ -840,7 +840,7 @@ const showTransporteOfTheWeek = programOfTheDay.map((showtransp)=>{
                     <td className="td_address">Guapimirim</td>
                     <td className="td_address">Jardim Anapolis- tp 17</td>
                     <td className="td_address">
-                      <a href="http://maps.google.com/maps/search/?api=1&query=-22.6000711,-42.9386638" target={"_blank"} rel="noopener noreferrer"> 
+                      <a href="http://maps.google.com/maps/place/-22.59866083144034,-42.92405932221116" target={"_blank"} rel="noopener noreferrer"> 
                       <FiMapPin size={16} color="#E02041" />
                       Gmaps
                       </a></td>
@@ -849,7 +849,7 @@ const showTransporteOfTheWeek = programOfTheDay.map((showtransp)=>{
                     <td className="td_address">Duque de Caxias</td>
                     <td className="td_address">Av. Djalma Dutra, S/N - tp 142</td>
                     <td className="td_address">
-                      <a href="http://maps.google.com/maps/search/?api=1&query=-22.693816,-43.300165" target={"_blank"} rel="noopener noreferrer"> 
+                      <a href="http://maps.google.com/maps/place/-22.693816,-43.300165" target={"_blank"} rel="noopener noreferrer"> 
                       <FiMapPin size={16} color="#E02041" />
                       Gmaps
                       </a></td>
@@ -858,7 +858,7 @@ const showTransporteOfTheWeek = programOfTheDay.map((showtransp)=>{
                     <td className="td_address">Anel de Gás</td>
                     <td className="td_address">Av. Fabor, 300 - tp 118</td>
                     <td className="td_address">
-                      <a href="http://maps.google.com/maps/search/?api=1&query=-22.715101,-43.263209" target={"_blank"} rel="noopener noreferrer"> 
+                      <a href="http://maps.google.com/maps/place/-22.715101,-43.263209" target={"_blank"} rel="noopener noreferrer"> 
                       <FiMapPin size={16} color="#E02041" />
                       Gmaps
                       </a></td>
